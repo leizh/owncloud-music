@@ -69,3 +69,4 @@ $api->addScript('public/musicFilePlayer');
 
 // register admin settings
 $api->registerAdmin('settings/admin');
+$api->registerPersonal('settings/user');
