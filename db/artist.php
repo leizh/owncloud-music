@@ -34,6 +34,10 @@ class Artist extends Entity {
 	public $image; // URL
 	public $userId;
 
+	// the following attributes aren't filled automatically
+	public $albumCount;
+	public $trackCount;
+
 	public function getUri(API $api) {
 		return $api->linkToRoute(
 			'music_artist',
