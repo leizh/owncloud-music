@@ -34,9 +34,9 @@ class AmpacheUserStatusMapper extends Mapper {
 
 	public function isAmpacheUser($userId){
 		$sql = 'SELECT * FROM `*PREFIX*music_ampache_user_status` `user` '.
-			'WHERE `user`.`user_id` = ? LIMIT 1';
+			'WHERE `user`.`user_id` = ?';
 		$params = array($userId);
-		$result = $this->execute($sql, $params);
+		$result = $this->execute($sql, $params, 1);
 		$row = $result->fetchRow();
 
 		if($row === false || $row === null){

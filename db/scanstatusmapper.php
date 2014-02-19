@@ -34,9 +34,9 @@ class ScanStatusMapper extends Mapper {
 
 	public function isScanned($userId){
 		$sql = 'SELECT * FROM `*PREFIX*music_scanned_users` `user` '.
-			'WHERE `user`.`user_id` = ? LIMIT 1';
+			'WHERE `user`.`user_id` = ?';
 		$params = array($userId);
-		$result = $this->execute($sql, $params);
+		$result = $this->execute($sql, $params, 1);
 		$row = $result->fetchRow();
 
 		if($row === false || $row === null){

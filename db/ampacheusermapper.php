@@ -34,9 +34,9 @@ class AmpacheUserMapper extends Mapper {
 
 	public function updatePassphrase($userId, $password){
 		$sql = 'SELECT COUNT(*) FROM `*PREFIX*music_ampache_users` '.
-			'WHERE `user_id` = ? LIMIT 1';
+			'WHERE `user_id` = ?';
 		$params = array($userId);
-		$result = $this->execute($sql, $params);
+		$result = $this->execute($sql, $params, 1);
 		$row = $result->fetchRow();
 
 		$hash = hash('sha256', $password);
@@ -65,9 +65,9 @@ class AmpacheUserMapper extends Mapper {
 
 	public function getPasswordHash($userId){
 		$sql = 'SELECT hash FROM `*PREFIX*music_ampache_users` '.
-			'WHERE `user_id` = ? LIMIT 1';
+			'WHERE `user_id` = ?';
 		$params = array($userId);
-		$result = $this->execute($sql, $params);
+		$result = $this->execute($sql, $params, 1);
 		$row = $result->fetchRow();
 
 		if($row === null){
