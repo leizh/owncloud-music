@@ -224,7 +224,7 @@
 			</field>
 
 			<index>
-				<name>music_ampache_users_index</name>
+				<name>music_ampache_user_status_index</name>
 				<unique>true</unique>
 				<field>
 					<name>user_id</name>
