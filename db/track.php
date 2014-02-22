@@ -37,6 +37,7 @@ class Track extends Entity {
 	public $albumId;
 	public $album;
 	public $length;
+	public $fileSize;
 	public $fileId;
 	public $bitrate;
 	public $uri;
@@ -60,7 +61,7 @@ class Track extends Entity {
 		);
 	}
 
-	public function getArtist(API $api) {
+	public function getArtistWithUri(API $api) {
 		return array(
 			'id' => $this->artistId,
 			'uri' => $api->linkToRoute(
@@ -70,7 +71,7 @@ class Track extends Entity {
 		);
 	}
 
-	public function getAlbum(API $api) {
+	public function getAlbumWithUri(API $api) {
 		return array(
 			'id' => $this->albumId,
 			'uri' => $api->linkToRoute(
@@ -84,8 +85,8 @@ class Track extends Entity {
 		return array(
 			'title' => $this->getTitle(),
 			'number' => $this->getNumber(),
-			'artist' => $this->getArtist($api),
-			'album' => $this->getAlbum($api),
+			'artist' => $this->getArtistWithUri($api),
+			'album' => $this->getAlbumWithUri($api),
 			'length' => $this->getLength(),
 			'files' => array($this->getMimetype() => $api->linkToRoute(
 				'download',
