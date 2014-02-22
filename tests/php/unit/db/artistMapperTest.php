@@ -102,6 +102,14 @@ class ArtistMapperTest extends \OCA\Music\AppFramework\Utility\MapperTestUtility
 		$this->assertEquals($this->artists[0], $result);
 	}
 
+	public function testFindByNameIsNull(){
+		$artistName = null;
+		$sql = $this->makeSelectQuery('AND `artist`.`name` IS NULL');
+		$this->setMapperResult($sql, array($this->userId), array($this->rows[2]));
+		$result = $this->mapper->findByName($artistName, $this->userId);
+		$this->assertEquals($this->artists[2], $result);
+	}
+
 	public function testDeleteByIdNone(){
 		$artistIds = array();
 
@@ -118,5 +126,12 @@ class ArtistMapperTest extends \OCA\Music\AppFramework\Utility\MapperTestUtility
 		$this->setMapperResult($sql, $artistIds, array());
 
 		$this->mapper->deleteById($artistIds);
+	}
+
+	public function testCount(){
+		$sql = 'SELECT COUNT(*) FROM `*PREFIX*music_artists` WHERE `user_id` = ?';
+		$this->setMapperResult($sql, array($this->userId), array(array('COUNT(*)' => 4)));
+		$result = $this->mapper->count($this->userId);
+		$this->assertEquals(4, $result);
 	}
 }

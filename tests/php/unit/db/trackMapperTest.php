@@ -91,6 +91,13 @@ class TrackMapperTest extends \OCA\Music\AppFramework\Utility\MapperTestUtility 
 		$this->assertEquals($this->tracks, $result);
 	}
 
+	public function testFindAllByAlbumAndArtist(){
+		$sql = $this->makeSelectQuery('AND `track`.`album_id` = ? AND `track`.`artist_id` = ?');
+		$this->setMapperResult($sql, array($this->userId, $this->albumId, $this->artistId), $this->rows);
+		$result = $this->mapper->findAllByAlbum($this->albumId, $this->userId, $this->artistId);
+		$this->assertEquals($this->tracks, $result);
+	}
+
 	public function testFindAllByAlbum(){
 		$sql = $this->makeSelectQuery('AND `track`.`album_id` = ?');
 		$this->setMapperResult($sql, array($this->userId, $this->albumId), $this->rows);
@@ -104,6 +111,14 @@ class TrackMapperTest extends \OCA\Music\AppFramework\Utility\MapperTestUtility 
 		$this->setMapperResult($sql, array($fileId), $this->rows);
 		$result = $this->mapper->findAllByFileId($fileId);
 		$this->assertEquals($this->tracks, $result);
+	}
+
+	public function testFindByFileId(){
+		$fileId = 1;
+		$sql = $this->makeSelectQuery('AND `track`.`file_id` = ?');
+		$this->setMapperResult($sql, array($this->userId, $fileId), array($this->rows[0]));
+		$result = $this->mapper->findByFileId($fileId, $this->userId);
+		$this->assertEquals($this->tracks[0], $result);
 	}
 
 	public function testCountByArtist(){
@@ -122,5 +137,12 @@ class TrackMapperTest extends \OCA\Music\AppFramework\Utility\MapperTestUtility 
 		$this->setMapperResult($sql, array($this->userId, $albumId), array(array('COUNT(*)' => 1)));
 		$result = $this->mapper->countByAlbum($albumId, $this->userId);
 		$this->assertEquals(1, $result);
+	}
+
+	public function testCount(){
+		$sql = 'SELECT COUNT(*) FROM `*PREFIX*music_tracks` WHERE `user_id` = ?';
+		$this->setMapperResult($sql, array($this->userId), array(array('COUNT(*)' => 4)));
+		$result = $this->mapper->count($this->userId);
+		$this->assertEquals(4, $result);
 	}
 }

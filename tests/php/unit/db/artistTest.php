@@ -50,4 +50,29 @@ class ArtistTest extends \PHPUnit_Framework_TestCase {
 			), $artist->toAPI($this->api));
 	}
 
+	public function testNullNameLocalisation() {
+		$artist = new Artist();
+		$artist->setName(null);
+
+		$l10nString = $this->getMockBuilder('OC_L10N_String')
+			->disableOriginalConstructor()
+			->getMock();
+		$l10nString->expects($this->once())
+			->method('__toString')
+			->will($this->returnValue('Unknown artist'));
+
+		$l10n = $this->getMockBuilder('OC_L10N')
+			->disableOriginalConstructor()
+			->getMock();
+		$l10n->expects($this->once())
+			->method('t')
+			->with($this->equalTo('Unknown artist'))
+			->will($this->returnValue($l10nString));
+
+		$this->api->expects($this->once())
+			->method('getTrans')
+			->will($this->returnValue($l10n));
+		$this->assertEquals('Unknown artist', $artist->getNameString($this->api));
+	}
+
 }
