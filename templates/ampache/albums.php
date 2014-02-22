@@ -1,17 +1,16 @@
 <?php
-header('Content-Type: text/xml');
 print '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>';
 ?>
 <root>
 	<?php foreach ($_['albums'] as $album): ?>
-		<album id='<?php p($album['id'])?>'>
-			<name><?php print_unescaped($album['name'])?></name>
-			<artist id='<?php p($album['artist'])?>'><?php p($album['artist_name'])?></artist>
-			<tracks><?php p($album['songs'])?></tracks>
+		<album id='<?php p($album->getId())?>'>
+			<name><?php p($album->getNameString($_['api']))?></name>
+			<artist id='<?php p($_['artist']->getId())?>'><?php p($_['artist']->getName())?></artist>
+			<tracks><?php p($album->getTrackCount())?></tracks>
 			<rating>0</rating>
-			<year>0</year>
+			<year><?php p($album->getYear())?></year>
 			<disk>1</disk>
-			<art> </art>
+			<art></art>
 			<preciserating>0</preciserating>
 		</album>
 	<?php endforeach;?>

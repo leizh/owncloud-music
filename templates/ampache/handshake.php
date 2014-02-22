@@ -1,4 +1,6 @@
-<?php echo '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>'; ?>
+<?php
+print '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>';
+?>
 <root>
 	<auth><?php p($_['token']);?></auth>
 	<version>350001</version>

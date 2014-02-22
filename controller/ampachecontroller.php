@@ -81,6 +81,8 @@ class AmpacheController extends Controller {
 				return $this->ping();
 			case 'artists':
 				return $this->artists();
+			case 'artist_albums':
+				return $this->artist_albums();
 		}
 		throw new AmpacheException('TODO', 999);
 	}
@@ -178,6 +180,28 @@ class AmpacheController extends Controller {
 		return $this->render(
 			'ampache/artists',
 			array('artists' => $artists),
+			'blank',
+			array('Content-Type' => 'text/xml')
+		);
+
+	}
+
+	protected function artist_albums() {
+		$userId = $this->ampacheUser->getUserId();
+		$artistId = $this->params('filter');
+
+		// this is used to fill in the artist information for each album
+		$artist = $this->artistMapper->find($artistId, $userId);
+		$albums = $this->albumMapper->findAllByArtist($artistId, $userId);
+
+		// set album and track count for artists
+		foreach($albums as &$album) {
+			$album->setTrackCount($this->trackMapper->countByArtist($album->getId(), $userId));
+		}
+
+		return $this->render(
+			'ampache/albums',
+			array('albums' => $albums, 'artist' => $artist, 'api' => $this->api),
 			'blank',
 			array('Content-Type' => 'text/xml')
 		);
