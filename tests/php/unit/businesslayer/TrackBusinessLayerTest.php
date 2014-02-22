@@ -48,6 +48,7 @@ class TrackBusinessLayerTest extends \OCA\Music\AppFramework\Utility\TestUtility
 		$this->userId = 'jack';
 		$this->artistId = 3;
 		$this->albumId = 3;
+		$this->fileId = 2;
 	}
 
 	public function testFindAllByArtist(){
@@ -74,6 +75,20 @@ class TrackBusinessLayerTest extends \OCA\Music\AppFramework\Utility\TestUtility
 
 		$result = $this->trackBusinessLayer->findAllByAlbum(
 			$this->albumId,
+			$this->userId);
+		$this->assertEquals($response, $result);
+	}
+
+	public function testFindByFileId(){
+		$response = '';
+		$this->mapper->expects($this->once())
+			->method('findByFileId')
+			->with($this->equalTo($this->fileId),
+					$this->equalTo($this->userId))
+			->will($this->returnValue($response));
+
+		$result = $this->trackBusinessLayer->findByFileId(
+			$this->fileId,
 			$this->userId);
 		$this->assertEquals($response, $result);
 	}
