@@ -85,6 +85,10 @@ class AmpacheController extends Controller {
 				return $this->artist_albums();
 			case 'album_songs':
 				return $this->album_songs();
+			case 'artist_songs':
+				return $this->artist_songs();
+			case 'song':
+				return $this->song();
 		}
 		throw new AmpacheException('TODO', 999);
 	}
@@ -210,6 +214,29 @@ class AmpacheController extends Controller {
 
 	}
 
+	protected function artist_songs() {
+		$userId = $this->ampacheUser->getUserId();
+		$artistId = $this->params('filter');
+
+		// this is used to fill in the artist information for each album
+		$artist = $this->artistMapper->find($artistId, $userId);
+		$tracks = $this->trackMapper->findAllByArtist($artistId, $userId);
+
+		// set album and track count for artists
+		foreach($tracks as &$track) {
+			$track->setArtist($artist);
+			$track->setAlbum($this->albumMapper->find($track->getAlbumId()));
+		}
+
+		return $this->render(
+			'ampache/songs',
+			array('songs' => $tracks, 'api' => $this->api),
+			'blank',
+			array('Content-Type' => 'text/xml')
+		);
+
+	}
+
 	protected function album_songs() {
 		$userId = $this->ampacheUser->getUserId();
 		$albumId = $this->params('filter');
@@ -227,6 +254,25 @@ class AmpacheController extends Controller {
 		return $this->render(
 			'ampache/songs',
 			array('songs' => $tracks, 'api' => $this->api),
+			'blank',
+			array('Content-Type' => 'text/xml')
+		);
+
+	}
+
+	protected function song() {
+		$userId = $this->ampacheUser->getUserId();
+		$trackId = $this->params('filter');
+
+		$track = $this->trackMapper->find($trackId, $userId);
+
+		// set album and track count for artists
+		$track->setArtist($this->artistMapper->find($track->getArtistId(), $userId));
+		$track->setAlbum($album);
+
+		return $this->render(
+			'ampache/songs',
+			array('songs' => array($track), 'api' => $this->api),
 			'blank',
 			array('Content-Type' => 'text/xml')
 		);
