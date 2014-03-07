@@ -87,6 +87,8 @@ class AmpacheController extends Controller {
 				return $this->album_songs();
 			case 'artist_songs':
 				return $this->artist_songs();
+			case 'songs':
+				return $this->songs();
 			case 'song':
 				return $this->song();
 		}
@@ -175,7 +177,17 @@ class AmpacheController extends Controller {
 	protected function artists() {
 		$userId = $this->ampacheUser->getUserId();
 
-		$artists = $this->artistMapper->findAll($userId);
+		// filter
+		$filter = $this->params('filter');
+		$fuzzy = !((boolean) $this->params('exact'));
+
+		// TODO add & update
+
+		if ($filter) {
+			$artists = $this->artistMapper->findBySearchTerm($filter, $userId, $fuzzy);
+		} else {
+			$artists = $this->artistMapper->findAll($userId);
+		}
 
 		// set album and track count for artists
 		foreach($artists as &$artist) {
@@ -189,7 +201,6 @@ class AmpacheController extends Controller {
 			'blank',
 			array('Content-Type' => 'text/xml')
 		);
-
 	}
 
 	protected function artist_albums() {
@@ -277,5 +288,34 @@ class AmpacheController extends Controller {
 			array('Content-Type' => 'text/xml')
 		);
 
+	}
+
+	protected function songs() {
+		$userId = $this->ampacheUser->getUserId();
+
+		// filter
+		$filter = $this->params('filter');
+		$fuzzy = !((boolean) $this->params('exact'));
+
+		// TODO add & update
+
+		if ($filter) {
+			$tracks = $this->trackMapper->findBySearchTerm($filter, $userId, $fuzzy);
+		} else {
+			$tracks = $this->trackMapper->findAll($userId);
+		}
+
+		// set album and artist for tracks
+		foreach($tracks as &$track) {
+			$track->setArtist($this->artistMapper->find($track->getArtistId(), $userId));
+			$track->setAlbum($this->albumMapper->find($track->getAlbumId(), $userId));
+		}
+
+		return $this->render(
+			'ampache/songs',
+			array('songs' => $tracks, 'api' => $this->api),
+			'blank',
+			array('Content-Type' => 'text/xml')
+		);
 	}
 }

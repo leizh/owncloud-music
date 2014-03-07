@@ -145,4 +145,18 @@ class TrackMapperTest extends \OCA\Music\AppFramework\Utility\MapperTestUtility 
 		$result = $this->mapper->count($this->userId);
 		$this->assertEquals(4, $result);
 	}
+
+	public function testFindBySearchTerm(){
+		$sql = $this->makeSelectQuery('AND `track`.`title` = ? ');
+		$this->setMapperResult($sql, array($this->userId, 123), array($this->rows[0]));
+		$result = $this->mapper->findBySearchTerm(123, $this->userId);
+		$this->assertEquals(array($this->tracks[0]), $result);
+	}
+
+	public function testFindBySearchTermFuzzy(){
+		$sql = $this->makeSelectQuery('AND LOWER(`track`.`title`) LIKE LOWER(?) ');
+		$this->setMapperResult($sql, array($this->userId, '%test123test%'), array($this->rows[0]));
+		$result = $this->mapper->findBySearchTerm('test123test', $this->userId, true);
+		$this->assertEquals(array($this->tracks[0]), $result);
+	}
 }

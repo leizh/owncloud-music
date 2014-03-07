@@ -92,4 +92,17 @@ class ArtistMapper extends Mapper {
 		$row = $result->fetchRow();
 		return $row['COUNT(*)'];
 	}
+
+	public function findBySearchTerm($searchTerm, $userId, $fuzzy = false){
+		if ($fuzzy) {
+			$condition = 'AND LOWER(`artist`.`name`) LIKE LOWER(?) ';
+			$searchTerm = '%' . $searchTerm . '%';
+		} else {
+			$condition = 'AND `artist`.`name` = ? ';
+		}
+		$sql = $this->makeSelectQuery($condition);
+		$params = array($userId, $searchTerm);
+		return $this->findEntities($sql, $params);
+	}
+
 }

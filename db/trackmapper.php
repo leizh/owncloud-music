@@ -110,4 +110,16 @@ class TrackMapper extends Mapper {
 		$row = $result->fetchRow();
 		return $row['COUNT(*)'];
 	}
+
+	public function findBySearchTerm($searchTerm, $userId, $fuzzy = false){
+		if ($fuzzy) {
+			$condition = 'AND LOWER(`track`.`title`) LIKE LOWER(?) ';
+			$searchTerm = '%' . $searchTerm . '%';
+		} else {
+			$condition = 'AND `track`.`title` = ? ';
+		}
+		$sql = $this->makeSelectQuery($condition);
+		$params = array($userId, $searchTerm);
+		return $this->findEntities($sql, $params);
+	}
 }
