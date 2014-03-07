@@ -85,6 +85,8 @@ class AmpacheController extends Controller {
 				return $this->artist_albums();
 			case 'album_songs':
 				return $this->album_songs();
+			case 'albums':
+				return $this->albums();
 			case 'artist_songs':
 				return $this->artist_songs();
 			case 'songs':
@@ -214,11 +216,12 @@ class AmpacheController extends Controller {
 		// set album and track count for artists
 		foreach($albums as &$album) {
 			$album->setTrackCount($this->trackMapper->countByArtist($album->getId(), $userId));
+			$album->setArtist($artist);
 		}
 
 		return $this->render(
 			'ampache/albums',
-			array('albums' => $albums, 'artist' => $artist, 'api' => $this->api),
+			array('albums' => $albums, 'api' => $this->api),
 			'blank',
 			array('Content-Type' => 'text/xml')
 		);
@@ -314,6 +317,67 @@ class AmpacheController extends Controller {
 		return $this->render(
 			'ampache/songs',
 			array('songs' => $tracks, 'api' => $this->api),
+			'blank',
+			array('Content-Type' => 'text/xml')
+		);
+	}
+
+	protected function albums() {
+		$userId = $this->ampacheUser->getUserId();
+
+		// filter
+		$filter = $this->params('filter');
+		$fuzzy = !((boolean) $this->params('exact'));
+
+		// TODO add & update
+
+		if ($filter) {
+			$albums = $this->albumMapper->findBySearchTerm($filter, $userId, $fuzzy);
+		} else {
+			$albums = $this->albumMapper->findAll($userId);
+		}
+
+		$albumIds = array();
+
+		// set track count for artists
+		foreach($albums as &$album) {
+			$album->setTrackCount($this->trackMapper->countByArtist($album->getId(), $userId));
+			$albumIds[] = $album->getId();
+		}
+
+		$albumWithArtistIds = $this->albumMapper->getAlbumArtistsByAlbumId($albumIds, $userId);
+
+		// this function is used to extract the first artistId of each album
+		$mapFunction = function($value) {
+			if (count($array)) {
+				// as Ampache only supports one artist per album
+				// we only return the first one
+				return $value[0];
+			}
+		};
+
+		// map this array to retrieve all artist ids and make it unique it
+		$artistIds = array_unique(array_map($mapFunction, $albumWithArtistIds));
+
+		$artists = $this->artistMapper->findMultipleById($artistIds, $user);
+
+		$mappedArtists = array();
+		foreach ($artists as $artist) {
+			$mappedArtists[$artist->getId()] = $artist;
+		}
+
+		// set track count for artists
+		foreach($albums as &$album) {
+			if (count($albumWithArtistIds[$album->getId()])) {
+				// as Ampache only supports one artist per album
+				// we only use the first one
+				$album->setArtist($mappedArtists[$albumWithArtistIds[$album->getId()][0]]);
+			}
+		}
+
+		return $this->render(
+			'ampache/albums',
+			array('albums' => $albums, 'api' => $this->api),
 			'blank',
 			array('Content-Type' => 'text/xml')
 		);

@@ -39,6 +39,7 @@ class Album extends Entity {
 
 	// the following attributes aren't filled automatically
 	public $trackCount;
+	public $artist; // just used for Ampache as this supports just one artist
 
 	public function __construct(){
 		$this->addType('year', 'int');
