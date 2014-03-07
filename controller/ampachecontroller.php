@@ -93,6 +93,8 @@ class AmpacheController extends Controller {
 				return $this->songs();
 			case 'song':
 				return $this->song();
+			case 'search_songs':
+				return $this->search_songs();
 		}
 		throw new AmpacheException('TODO', 999);
 	}
@@ -307,6 +309,28 @@ class AmpacheController extends Controller {
 		} else {
 			$tracks = $this->trackMapper->findAll($userId);
 		}
+
+		// set album and artist for tracks
+		foreach($tracks as &$track) {
+			$track->setArtist($this->artistMapper->find($track->getArtistId(), $userId));
+			$track->setAlbum($this->albumMapper->find($track->getAlbumId(), $userId));
+		}
+
+		return $this->render(
+			'ampache/songs',
+			array('songs' => $tracks, 'api' => $this->api),
+			'blank',
+			array('Content-Type' => 'text/xml')
+		);
+	}
+
+	protected function search_songs() {
+		$userId = $this->ampacheUser->getUserId();
+
+		// filter
+		$filter = $this->params('filter');
+
+		$tracks = $this->trackMapper->findBySearchTermAllAttributes($filter, $userId);
 
 		// set album and artist for tracks
 		foreach($tracks as &$track) {

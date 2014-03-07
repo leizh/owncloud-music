@@ -122,4 +122,14 @@ class TrackMapper extends Mapper {
 		$params = array($userId, $searchTerm);
 		return $this->findEntities($sql, $params);
 	}
+
+	public function findBySearchTermAllAttributes($searchTerm, $userId){
+		$condition = ' AND (`track`.`artist_id` IN (SELECT `id` FROM `*PREFIX*music_artists` WHERE LOWER(`name`) LIKE LOWER(?)) OR '.
+						' `track`.`album_id` IN (SELECT `id` FROM `*PREFIX*music_albums` WHERE LOWER(`name`) LIKE LOWER(?)) OR '.
+						' LOWER(`track`.`title`) LIKE LOWER(?) )';
+		$sql = $this->makeSelectQuery($condition);
+		$searchTerm = '%' . $searchTerm . '%';
+		$params = array($userId, $searchTerm, $searchTerm, $searchTerm);
+		return $this->findEntities($sql, $params);
+	}
 }
