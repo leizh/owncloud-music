@@ -85,7 +85,7 @@ class ApiController extends Controller {
 			$album['tracks'][] = $track->toCollection($this->api);
 		}
 
-		return $this->renderJSON($artists);
+		return $this->renderPlainJSON($artists);
 	}
 
 	/**
