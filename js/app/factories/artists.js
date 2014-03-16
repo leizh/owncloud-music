@@ -20,7 +20,7 @@
  */
 
 angular.module('Music').factory('Artists', ['Restangular', '$rootScope', function (Restangular, $rootScope) {
-	return Restangular.all('artists').getList({fulltree: true}).then(
+	return Restangular.all('collection').getList().then(
 		function(result){
 			$rootScope.$emit('artistsLoaded');
 			return result;

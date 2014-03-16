@@ -18,3 +18,32 @@
  * License along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
+
+$(document).ready(function() {
+
+/*
+ * Collection path
+ */
+var $path = $('#music-path');
+$path.on('click', function() {
+	$path.prop('disabled', true);
+	OC.dialogs.filepicker(
+		t('music', 'Path to your music collection'),
+		function (path) {
+			if ($path.val() == path) $path.prop('disabled', false);
+			else {
+				$path.val(path);
+				$.post(OC.Router.generate('music_settings_user_path'), { value: path }, function(data) {
+					if (!data.success) $path[0].setCustomValidity(t('music', 'Invalid path'));
+					else $path[0].setCustomValidity('');
+					$path.prop('disabled', false);
+				});
+			}
+		},
+		false,
+		'httpd/unix-directory',
+		true
+	);
+});
+
+});
