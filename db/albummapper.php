@@ -45,7 +45,7 @@ class AlbumMapper extends Mapper {
 		return 'SELECT `album`.`name`, `album`.`year`, `album`.`id`, '.
 				'`album`.`cover_file_id`, `file`.`path` as `coverFilePath`'.
 				'FROM `*PREFIX*music_albums` `album`, `*PREFIX*filecache` `file` '.
-				'WHERE `track`.`cover_file_id` = `file`.`fileid` AND `album`.`user_id` = ? ' . $condition;
+				'WHERE `album`.`cover_file_id` = `file`.`fileid` AND `album`.`user_id` = ? ' . $condition;
 	}
 
 	public function findAll($userId){

@@ -80,7 +80,7 @@ class Album extends Entity {
 		$coverUrl = null;
 		if($this->getCoverFileId() > 0) {
 			$coverUrl = $api->linkToRoute('download',
-					array('file' => $api->getView()->getPath($coverFilePath)));
+					array('file' => strstr($this->getCoverFilePath(),'/')));
 		}
 		return array(
 				'name' => $this->getNameString($api),
