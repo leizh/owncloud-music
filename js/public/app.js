@@ -138,11 +138,11 @@ angular.module('Music').controller('MainController',
 	$scope.playTrack = function(track) {
 		var artist = _.find($scope.artists,
 			function(artist) {
-				return artist.id === track.artist.id;
+				return artist.id === track.artistId;
 			}),
 			album = _.find(artist.albums,
 			function(album) {
-				return album.id === track.album.id;
+				return album.id === track.albumId;
 			}),
 			tracks = _.sortBy(album.tracks,
 				function(track) {
@@ -275,12 +275,12 @@ angular.module('Music').controller('PlayerController',
 			// find artist
 			$scope.currentArtist = _.find($scope.artists,
 										function(artist){
-											return artist.id === newValue.artist.id;
+											return artist.id === newValue.artistId;
 										});
 			// find album
 			$scope.currentAlbum = _.find($scope.currentArtist.albums,
 										function(album){
-											return album.id === newValue.album.id;
+											return album.id === newValue.albumId;
 										});
 
 			$scope.player.createSound({
@@ -503,7 +503,6 @@ angular.module('Music').directive('scrollTo', ['$window', function($window) {
 }]);
 angular.module('Music').factory('Artists', ['Restangular', '$rootScope', function (Restangular, $rootScope) {
 	return Restangular.all('collection').getList().then(
-	//return Restangular.all('collection').getList().then(
 		function(result){
 			$rootScope.$emit('artistsLoaded');
 			return result;

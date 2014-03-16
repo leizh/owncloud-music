@@ -130,11 +130,11 @@ angular.module('Music').controller('MainController',
 	$scope.playTrack = function(track) {
 		var artist = _.find($scope.artists,
 			function(artist) {
-				return artist.id === track.artist.id;
+				return artist.id === track.artistId;
 			}),
 			album = _.find(artist.albums,
 			function(album) {
-				return album.id === track.album.id;
+				return album.id === track.albumId;
 			}),
 			tracks = _.sortBy(album.tracks,
 				function(track) {
