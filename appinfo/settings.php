@@ -26,13 +26,3 @@ namespace OCA\Music;
 
 use \OCA\Music\AppFramework\App;
 use \OCA\Music\DependencyInjection\DIContainer;
-
-
-/**
- * Path of the music collection
- */
-$this->create('music_user_settings_post', '/api/user/settings')->post()->action(
-        function($params){
-                App::main('SettingController', 'userSetting', $params, new DIContainer());
-        }
-);
