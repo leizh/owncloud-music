@@ -67,7 +67,7 @@ class AlbumBusinessLayer extends BusinessLayer {
 	 * @return array of albums
 	 */
 	public function findAllByPath($path, $userId){
-		$albums = $this->mapper->findAll($userId);
+		$albums = $this->mapper->findAllByPath($path, $userId);
 		return $albums;
 	}
 
