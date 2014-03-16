@@ -66,3 +66,7 @@ $api->addScript('public/fileactions');
 
 // load file for public sharing page
 $api->addScript('public/musicFilePlayer');
+
+// register settings
+$api->registerAdmin('settings/admin');
+$api->registerPersonal('settings/user');
