@@ -44,12 +44,19 @@ class AlbumMapper extends Mapper {
 	private function makeSelectQueryWithFileInfo($condition=null){
 		return 'SELECT `album`.`name`, `album`.`year`, `album`.`id`, '.
 				'`album`.`cover_file_id`, `file`.`path` as `coverFilePath`'.
-				'FROM `*PREFIX*music_albums` `album`, `*PREFIX*filecache` `file` '.
-				'WHERE (`album`.`cover_file_id` IS NULL OR `album`.`cover_file_id` = `file`.`fileid`) '.
+				'FROM `*PREFIX*music_albums` `album` '.
+				'LEFT OUTER JOIN `*PREFIX*filecache` `file` '.
+				'ON `album`.`cover_file_id` = `file`.`fileid` ' .
 				'AND `album`.`user_id` = ? ' . $condition;
 	}
 
 	public function findAll($userId){
+		$sql = $this->makeSelectQuery();
+		$params = array($userId);
+		return $this->findEntities($sql, $params);
+	}
+
+	public function findAllWithFileInfo($userId){
 		$sql = $this->makeSelectQueryWithFileInfo();
 		$params = array($userId);
 		return $this->findEntities($sql, $params);

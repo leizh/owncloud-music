@@ -63,7 +63,7 @@ class ApiController extends Controller {
 		$allArtistsById = array();
 		foreach ($allArtists as &$artist) $allArtistsById[$artist->id] = $artist->toCollection($this->api);
 
-		$allAlbums = $this->albumBusinessLayer->findAll($userId);
+		$allAlbums = $this->albumBusinessLayer->findAllWithFileInfo($userId);
 		$allAlbumsById = array();
 		foreach ($allAlbums as &$album) $allAlbumsById[$album->id] = $album->toCollection($this->api);
 

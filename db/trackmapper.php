@@ -45,8 +45,10 @@ class TrackMapper extends Mapper {
 				'`track`.`artist_id`, `track`.`album_id`, `track`.`length`, '.
 				'`track`.`file_id`, `track`.`bitrate`, `track`.`mimetype`, '.
 				'`file`.`path` as `filePath`, `file`.`size` as `fileSize` '.
-				'FROM `*PREFIX*music_tracks` `track`, `*PREFIX*filecache` `file` '.
-				'WHERE `track`.`file_id` = `file`.`fileid` AND ' . $condition;
+				'FROM `*PREFIX*music_tracks` `track` '.
+				'INNER JOIN `*PREFIX*filecache` `file` '.
+				'ON `track`.`file_id` = `file`.`fileid` '.
+				'WHERE ' . $condition;
 	}
 
 	private function makeSelectQuery($condition=null){
