@@ -61,6 +61,17 @@ class AlbumBusinessLayer extends BusinessLayer {
 	}
 
 	/**
+	 * Returns all albums filtered by cover path
+	 * @param string $path the path used as filter
+	 * @param string $userId the name of the user
+	 * @return array of albums
+	 */
+	public function findAllByPath($path, $userId){
+		$albums = $this->mapper->findAll($userId);
+		return $albums;
+	}
+
+	/**
 	 * Returns all albums filtered by artist
 	 * @param string $artistId the id of the artist
 	 * @return array of albums
