@@ -78,7 +78,7 @@ class Album extends Entity {
 
 	public function toCollection(API $api) {
 		$coverUrl = null;
-		if($this->getCoverFileId() > 0) {
+		if($this->getCoverFilePath()) {
 			$coverUrl = $api->linkToRoute('download',
 					array('file' => strstr($this->getCoverFilePath(),'/')));
 		}
