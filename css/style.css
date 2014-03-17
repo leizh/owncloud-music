@@ -215,4 +215,13 @@
 
 .alphabet-navigation a.available {
 	display: block;
-	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opaci
+	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=40)";
+	filter: alpha(opacity = 40);
+	opacity: .4;
+}
+
+.alphabet-navigation a:hover {
+	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=80)";
+	filter: alpha(opacity = 80);
+	opacity: .8;
+}
