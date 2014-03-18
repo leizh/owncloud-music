@@ -30,6 +30,3 @@
 
 ?>
 
-<fieldset class="personalblock" id="music-admin">
-	<h2><?php p($l->t('Music')); ?></h2>
-</fieldset>
