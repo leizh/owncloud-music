@@ -21,8 +21,8 @@
 
 
 angular.module('Music').controller('PlayerController',
-	['$scope', '$rootScope', 'playlistService', 'Audio', 'Artists', 'Restangular', 'gettext', '$filter',
-	function ($scope, $rootScope, playlistService, Audio, Artists, Restangular, gettext, $filter) {
+	['$scope', '$rootScope', 'playlistService', 'Audio', 'Artists', 'Restangular', 'gettext', 'gettextCatalog', '$filter',
+	function ($scope, $rootScope, playlistService, Audio, Artists, Restangular, gettext, gettextCatalog, $filter) {
 
 	$scope.playing = false;
 	$scope.buffering = false;
@@ -50,45 +50,52 @@ angular.module('Music').controller('PlayerController',
 		}
 		if (!--$scope.eventsBeforePlaying) $scope.handlePlayRequest();
 	});
-	
+
 	$rootScope.$on('artistsLoaded', function () {
 		if (!--$scope.eventsBeforePlaying) $scope.handlePlayRequest();
 	});
-	
+
 	$(window).on('hashchange', function() {
 		$scope.handlePlayRequest();
 		$scope.$apply();
 	});
 
 	$scope.handlePlayRequest = function() {
-		if (!$scope.$parent.artists) return;
-		
-		var type, object;
-		
-		var playRequest = $scope.$parent.playRequest;
+		if (!$scope.$parent.artists) {
+			return;
+		}
+
+		var type,
+			object,
+			playRequest = $scope.$parent.playRequest;
+
 		if (playRequest) {
 			type = playRequest.type;
 			object = playRequest.object;
 			$scope.$parent.playRequest = null;
 		} else {
-			var hashParts = window.location.hash.substr(1).split('/'); 
+			var hashParts = window.location.hash.substr(1).split('/');
 			if (!hashParts[0] && hashParts[1] && hashParts[2]) {
 				type = hashParts[1];
 				var id = hashParts[2];
-				
-				if (type == 'file') object = id;
-				else if (type == 'artist') {
+
+				if (type == 'file') {
+					object = id;
+				} else if (type == 'artist') {
+					// search for the artist by id
 					object = _.find($scope.$parent.artists, function(artist) {
 						return artist.id == id;
 					});
 				} else {
 					var albums = _.flatten(_.pluck($scope.$parent.artists, 'albums'));
 					if (type == 'album') {
+						// search for the album by id
 						object = _.find(albums, function(album) {
 							return album.id == id;
 						});
 					} else if (type == 'track') {
 						var tracks = _.flatten(_.pluck(albums, 'tracks'));
+						// search for the track by id
 						object = _.find(tracks, function(track) {
 							return track.id == id;
 						});
@@ -97,21 +104,26 @@ angular.module('Music').controller('PlayerController',
 			}
 		}
 		if (type && object) {
-			if (type == 'artist') $scope.playArtist(object);
-			else if (type == 'album') $scope.playAlbum(object);
-			else if (type == 'track') $scope.playTrack(object);
-			else if (type == 'file') $scope.playFile(object);
+			if (type == 'artist') {
+				$scope.playArtist(object);
+			} else if (type == 'album') {
+				$scope.playAlbum(object);
+			} else if (type == 'track') {
+				$scope.playTrack(object);
+			} else if (type == 'file') {
+				$scope.playFile(object);
+			}
 		}
 	};
-	
+
 	$scope.playTrack = function(track) {
 		var artist = _.find($scope.$parent.artists,
 			function(artist) {
-				return artist.id === track.artistId;
+				return artist.id === track.artist.id;
 			}),
 			album = _.find(artist.albums,
 			function(album) {
-				return album.id === track.albumId;
+				return album.id === track.album.id;
 			}),
 			tracks = _.sortBy(album.tracks,
 				function(track) {
@@ -190,10 +202,11 @@ angular.module('Music').controller('PlayerController',
 				true : false;
 		for(var mimeType in track.files) {
 			if(mimeType === 'audio/ogg' && isChrome) {
+				var str = gettext(
+					'Chrome is only able to play MP3 files - see <a href="https://github.com/owncloud/music/wiki/Frequently-Asked-Questions#why-can-chromechromium-just-playback-mp3-files">wiki</a>'
+				);
 				// TODO inject this
-				OC.Notification.showHtml(gettext(
-					'Chrome is only able to playback MP3 files - see <a href="https://github.com/owncloud/music/wiki/Frequently-Asked-Questions#why-can-chromechromium-just-playback-mp3-files">wiki</a>'
-				));
+				OC.Notification.showHtml(gettextCatalog.getString(str));
 			}
 			if(Audio.canPlayMIME(mimeType)) {
 				return track.files[mimeType];
