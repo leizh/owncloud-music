@@ -105,6 +105,10 @@ class AlbumBusinessLayer extends BusinessLayer {
 	public function addAlbumIfNotExist($name, $year, $artistId, $userId){
 		try {
 			$album = $this->mapper->findByNameAndYear($name, $year, $userId);
+			$artists = $this->mapper->getAlbumArtistsByAlbumId(array($album->getId()));
+			if (!in_array($artistId, $artists[$album->getId()])) {
+				throw new DoesNotExistException();
+			}
 			$this->api->log('addAlbumIfNotExist - exists - ID: ' . $album->getId(), 'debug');
 		} catch(DoesNotExistException $ex){
 			$album = new Album();
