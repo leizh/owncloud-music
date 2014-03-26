@@ -136,31 +136,28 @@
 
 #playerbar .progress, #playerbar .seek-bar {
 	width: 100%;
+	height: 15px;
 	position: relative;
 	background-color: #ccc;
-	height: 15px;
 }
 
 #playerbar.started .progress, #playerbar.started .seek-bar, #playerbar.started .play-bar, #playerbar .buffer-bar {
 	display: block;
 }
 
-#playerbar .play-bar {
+#playerbar .play-bar, #playerbar .buffer-bar {
 	position: absolute;
 	left: 0;
 	top: 0;
 	height: 15px;
 	width: 0%;
 	background-color: #1d2d44;
+	cursor: pointer;
 }
 
 #playerbar .buffer-bar {
-	position: absolute;
-	left: 0;
-	top: 0;
-	height: 15px;
-	width: 0%;
-	background-color: #1d2d44;
+	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=10)";
+	filter: alpha(opacity = 10);
 	opacity: 0.1;
 }
 

@@ -1,5 +1,5 @@
 <?php
-\OCP\Util::addScript('music', 'vendor/underscore/underscore.min');
+\OCP\Util::addScript('music', 'vendor/underscore/underscore-min');
 \OCP\Util::addScript('music', 'vendor/angular/angular.min');
 \OCP\Util::addScript('music', 'vendor/angular/angular-animate.min');
 \OCP\Util::addScript('music', 'vendor/soundmanager/soundmanager2');
@@ -11,6 +11,7 @@
 \OCP\Util::addStyle('music', 'style-sidebar');
 \OCP\Util::addStyle('music', 'style');
 \OCP\Util::addStyle('music', 'mobile');
+\OCP\Util::addStyle('music', 'tablet');
 ?>
 
 <div id="app" ng-app="Music" ng-cloak ng-init="started = false; lang = '<?php p($_['lang']) ?>'">
@@ -40,7 +41,7 @@
 				<span class="artist" title="{{ currentArtist.name }}">{{ currentArtist.name }}</span>
 			</div>
 			<div ng-show="currentTrack.title" class="progress-info">
-				<span ng-hide="buffering" class="play-position muted" muted">&nbsp;</span>
+				<span ng-hide="buffering" class="play-position muted">&nbsp;</span>
 				<span ng-show="buffering" class="muted" translate>Loading ...</span>
 				<div class="progress">
 					<div class="seek-bar" ng-click="seek($event)">

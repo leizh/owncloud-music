@@ -38,4 +38,10 @@ angular.module('Music', ['restangular', 'gettext', 'ngAnimate']).
 
 	// configure RESTAngular path
 	RestangularProvider.setBaseUrl('api');
-}]);
+}]).
+	run(function(Token, Restangular){
+
+	// add CSRF token
+	Restangular.setDefaultHeaders({requesttoken: Token});
+
+});

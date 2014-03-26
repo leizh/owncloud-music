@@ -31,8 +31,15 @@ use \OCA\Music\AppFramework\Http\Request;
 
 class SettingController extends Controller {
 
+	private $ampacheUserMapper;
+
+	public function __construct(API $api, Request $request, Mapper $ampacheUserMapper){
+		parent::__construct($api, $request);
+
+		$this->ampacheUserMapper = $ampacheUserMapper;
+	}
+
 	/**
-	 * @CSRFExemption
 	 * @IsAdminExemption
 	 * @IsSubAdminExemption
 	 * @Ajax
@@ -41,13 +48,47 @@ class SettingController extends Controller {
 		$success = false;
 		$path = $this->params('value');
 		$pathInfo = $this->api->getFileInfo($path);
-		if ($pathInfo && $pathInfo[mimetype] == 'httpd/unix-directory') {
-			if ($path[0] != '/') $path = ('/' . $path);
-			if ($path[strlen($path)-1] != '/') $path .= '/';
+		if ($pathInfo && $pathInfo['mimetype'] === 'httpd/unix-directory') {
+			if ($path[0] != '/') {
+				$path = '/' . $path;
+			}
+			if ($path[strlen($path)-1] !== '/') {
+				$path .= '/';
+			}
 			$this->api->setUserValue('path', $path);
 			$success = true;
 		}
 		return $this->renderPlainJSON(array('success' => $success));
 	}
 
+	/**
+	 * @IsAdminExemption
+	 * @IsSubAdminExemption
+	 * @Ajax
+	 */
+	public function addUserKey() {
+		$userId = $this->api->getUserId();
+		$success = false;
+		$description = $this->params('description');
+		$password = $this->params('password');
+
+		$hash = hash('sha256', $password);
+		$id = $this->ampacheUserMapper->addUserKey($userId, $hash, $description);
+		if($id !== null) {
+			$success = true;
+		}
+		return $this->renderPlainJSON(array('success' => $success, 'id' => $id));
+	}
+
+	/**
+	 * @IsAdminExemption
+	 * @IsSubAdminExemption
+	 * @Ajax
+	 */
+	public function removeUserKey() {
+		$userId = $this->api->getUserId();
+		$id = $this->params('id');
+		$this->ampacheUserMapper->removeUserKey($userId, $id);
+		return $this->renderPlainJSON(array('success' => true));
+	}
 }

@@ -21,14 +21,20 @@
  *
  */
 
-namespace OCA\Music;
 
-use \OCA\Music\DependencyInjection\DIContainer;
+namespace OCA\Music\Db;
 
-$c = new DIContainer();
+use \OCA\Music\AppFramework\Db\Entity;
+use \OCA\Music\Core\API;
 
-$c['API']->addScript('public/settings-admin');
-$c['API']->addStyle('settings-admin');
 
-$tmpl = new \OCP\Template($c['API']->getAppName(), 'settings-admin');
-return $tmpl->fetchPage();
+class AmpacheSession extends Entity {
+
+	public $userId;
+	public $token;
+	public $expiry;
+
+	public function __construct(){
+		$this->addType('expiry', 'int');
+	}
+}

@@ -1,6 +1,10 @@
-<div ng-hide="artists" id="emptystate">
+<div ng-hide="artists" id="emptycontent">
 	<span ng-hide="loading" translate>Nothing in here. Upload your music!</span>
 	<span ng-show="loading" translate>Loading ...</span>
+</div>
+
+<div id="scanning" ng-show="scanning">
+	<span translate>Scanning ... </span> {{ scanningScanned }}/{{ scanningTotal }}
 </div>
 
 <div class="artist-area" ng-repeat="artist in artists | orderBy:'name'" ng-init="letter = artist.name.substr(0,1).toUpperCase(); opened = false;">
@@ -11,8 +15,8 @@
 	</h1>
 	<div class="albums-area" ng-show="opened">
 		<div class="album-area" ng-repeat="album in artist.albums | orderBy:'year'">
-			<h2 ng-click="play('album', album)" title="{{ album.name }} ({{ album.year}})">{{ album.name }}
-				<span ng-show="album.year" class="muted">({{ album.year }})</span>
+			<h2 ng-click="play('album', album)" title="{{ album.name }} ({{ album.year}})"><div>{{ album.name }}
+				<span ng-show="album.year" class="muted">({{ album.year }})</span></div>
 			</h2>
 			<div ng-click="play('album', album)" class="albumart" cover="{{ album.cover }}" albumart="{{ album.name }}"></div>
 			<img ng-click="play('album', album)" class="play overlay svg" alt="{{ 'Play' | translate }}"

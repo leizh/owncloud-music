@@ -32,6 +32,8 @@ use OCA\Music\DB\Artist;
 use OCA\Music\DB\Album;
 use OCA\Music\DB\Track;
 
+require_once __DIR__ . '/../HooksStubs.php';
+
 /* FIXME: dirty hack to mock object */
 class TestView {
 	public function getPath($fileId) {
@@ -54,7 +56,8 @@ class APIControllerTest extends ControllerTestUtility {
 		return new ApiController($this->api, new Request(array('urlParams' => $urlParams)),
 			$this->trackBusinessLayer,
 			$this->artistBusinessLayer,
-			$this->albumBusinessLayer);
+			$this->albumBusinessLayer,
+			$this->scanner);
 	}
 
 	protected function setUp(){
@@ -73,11 +76,15 @@ class APIControllerTest extends ControllerTestUtility {
 		$this->albumBusinessLayer = $this->getMockBuilder('\OCA\Music\BusinessLayer\AlbumBusinessLayer')
 			->disableOriginalConstructor()
 			->getMock();
+		$this->scanner = $this->getMockBuilder('\OCA\Music\Utility\Scanner')
+			->disableOriginalConstructor()
+			->getMock();
 		$this->request = new Request();
 		$this->controller = new ApiController($this->api, $this->request,
 			$this->trackBusinessLayer,
 			$this->artistBusinessLayer,
-			$this->albumBusinessLayer);
+			$this->albumBusinessLayer,
+			$this->scanner);
 	}
 
 	private function assertAPIControllerAnnotations($methodName){
@@ -326,8 +333,6 @@ class APIControllerTest extends ControllerTestUtility {
 		$album->setYear(2013);
 		$album->setCoverFileId(5);
 		$album->setArtistIds(array(3));
-
-		$albumId = 4;
 
 		$this->api->expects($this->exactly(8))
 			->method('linkToRoute')
@@ -1076,6 +1081,7 @@ class APIControllerTest extends ControllerTestUtility {
 	public function testTrackById(){
 		$trackId = 1;
 		$fileId = 3;
+		$filePath = '/test/123.mp3';
 
 		$track = new Track();
 		$track->setId($trackId);
@@ -1085,10 +1091,11 @@ class APIControllerTest extends ControllerTestUtility {
 		$track->setNumber(4);
 		$track->setLength(123);
 		$track->setFileId($fileId);
+		$track->setFilePath($filePath);
 		$track->setMimetype('audio/mp3');
 		$track->setBitrate(123);
 
-		$this->api->expects($this->exactly(4))
+		$this->api->expects($this->exactly(1))
 			->method('linkToRoute')
 			->will($this->returnCallback($this->getLinkToRouteFunction()));
 
@@ -1102,16 +1109,12 @@ class APIControllerTest extends ControllerTestUtility {
 
 		$result = array(
 			'title' => 'The title',
-			'uri' => '/api/track/1',
-			'slug' => '1-the-title',
 			'id' => 1,
 			'number' => 4,
-			'bitrate' => 123,
-			'length' => 123,
-			'artist' => array('id' => 3, 'uri' => '/api/artist/3'),
-			'album' => array('id' => 1, 'uri' => '/api/album/1'),
+			'artistId' => 3,
+			'albumId' => 1,
 			'files' => array(
-				'audio/mp3' => 3
+				'audio/mp3' => $filePath
 			)
 		);
 

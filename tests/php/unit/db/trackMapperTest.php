@@ -57,13 +57,23 @@ class TrackMapperTest extends \OCA\Music\AppFramework\Utility\MapperTestUtility 
 		);
 	}
 
-
 	private function makeSelectQueryWithoutUserId($condition){
 		return 'SELECT `track`.`title`, `track`.`number`, `track`.`id`, '.
 			'`track`.`artist_id`, `track`.`album_id`, `track`.`length`, '.
 			'`track`.`file_id`, `track`.`bitrate`, `track`.`mimetype` '.
 			'FROM `*PREFIX*music_tracks` `track` '.
 			'WHERE ' . $condition;
+	}
+
+	private function makeSelectQueryWithFileInfo($condition){
+		return 'SELECT `track`.`title`, `track`.`number`, `track`.`id`, '.
+				'`track`.`artist_id`, `track`.`album_id`, `track`.`length`, '.
+				'`track`.`file_id`, `track`.`bitrate`, `track`.`mimetype`, '.
+				'`file`.`path` as `filePath`, `file`.`size` as `fileSize` '.
+				'FROM `*PREFIX*music_tracks` `track` '.
+				'INNER JOIN `*PREFIX*filecache` `file` '.
+				'ON `track`.`file_id` = `file`.`fileid` '.
+				'WHERE `track`.`user_id` = ? ' . $condition;
 	}
 
 	private function makeSelectQuery($condition=null){
@@ -115,7 +125,7 @@ class TrackMapperTest extends \OCA\Music\AppFramework\Utility\MapperTestUtility 
 
 	public function testFindByFileId(){
 		$fileId = 1;
-		$sql = $this->makeSelectQuery('AND `track`.`file_id` = ?');
+		$sql = $this->makeSelectQueryWithFileInfo('AND `track`.`file_id` = ?');
 		$this->setMapperResult($sql, array($this->userId, $fileId), array($this->rows[0]));
 		$result = $this->mapper->findByFileId($fileId, $this->userId);
 		$this->assertEquals($this->tracks[0], $result);
@@ -165,7 +175,7 @@ class TrackMapperTest extends \OCA\Music\AppFramework\Utility\MapperTestUtility 
 						' `track`.`album_id` IN (SELECT `id` FROM `*PREFIX*music_albums` WHERE LOWER(`name`) LIKE LOWER(?)) OR '.
 						' LOWER(`track`.`title`) LIKE LOWER(?) )');
 		$this->setMapperResult($sql, array($this->userId, '%test123test%', '%test123test%', '%test123test%'), array($this->rows[0]));
-		$result = $this->mapper->findAllByNameRecursive('test123test', $this->userId, true);
+		$result = $this->mapper->findAllByNameRecursive('test123test', $this->userId);
 		$this->assertEquals(array($this->tracks[0]), $result);
 	}
 }

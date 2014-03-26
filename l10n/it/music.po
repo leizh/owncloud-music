@@ -1,28 +1,61 @@
 # 
 # Translators:
+# Jessica Di Maria <dimariaj87@gmail.com>, 2014
 # Paolo Velati <paolo.velati@gmail.com>, 2014
 # Vincenzo Reale <vinx.reale@gmail.com>, 2013-2014
 msgid ""
 msgstr ""
 "Project-Id-Version: ownCloud\n"
-"PO-Revision-Date: 2014-03-11 22:52+0000\n"
-"Last-Translator: Vincenzo Reale <vinx.reale@gmail.com>\n"
+"PO-Revision-Date: 2014-03-25 05:30+0000\n"
+"Last-Translator: I Robot\n"
 "Language-Team: Italian (http://www.transifex.com/projects/p/owncloud/language/it/)\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: it\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: ../js/public/app.js
-msgid ""
-"Chrome is only able to play MP3 files - see <a "
-"href=\"https://github.com/owncloud/music/wiki/Frequently-Asked-Questions"
-"#why-can-chromechromium-just-playback-mp3-files\">wiki</a>"
-msgstr "Chrome è in grado di riprodurre solo file MP3 - vedi il <a href=\"https://github.com/owncloud/music/wiki/Frequently-Asked-Questions#why-can-chromechromium-just-playback-mp3-files\">wiki</a>"
+#: ../templates/fake-template.php
+msgid "Albums"
+msgstr "Album"
+
+#: ../templates/fake-template.php
+msgid "Artists"
+msgstr "Artisti"
 
 #: ../templates/main.php
 msgid "Delete"
 msgstr "Elimina"
+
+#: ../templates/fake-template.php
+msgid "Description"
+msgstr "Descrizione"
+
+#: ../templates/fake-template.php
+msgid "Description (e.g. App name)"
+msgstr "Descrizione (ad es. Nome applicazione)"
+
+#: ../templates/fake-template.php
+msgid "Generate API password"
+msgstr "Genera una password API"
+
+#: ../templates/fake-template.php
+msgid ""
+"Here you can generate passwords to use with the Ampache API, because they "
+"can't be stored in a really secure way due to the design of the Ampache API."
+" You can generate as many passwords as you want and revoke them anytime."
+msgstr "Qui puoi creare le password da usare con l'API di Ampache, perché esse non possono essere memorizzare in maniera sicura a causa della forma dell'API di Ampache. Puoi generare tutte le password che vuoi e puoi riprenderle quando vuoi."
+
+#: ../templates/fake-template.php
+msgid "Invalid path"
+msgstr "Percorso non valido"
+
+#: ../templates/fake-template.php
+msgid ""
+"Keep in mind, that the Ampache API is just a preview and is unstable. Feel "
+"free to report your experience with this feature in the corresponding <a "
+"href=\"https://github.com/owncloud/music/issues/60\">issue</a>. I would also"
+" like to have a list of clients to test with. Thanks"
+msgstr "Ricorda, l'API di Ampache è solo un'anteprima e non è stabile. Sentiti libero nel riportare la tua esperienza con questa funzione nel corrispondente <a href=\"https://github.com/owncloud/music/issues/60\">issue</a>. Preferirei anche avere una lista di clienti da testare. Grazie."
 
 #: ../templates/main.php ../templates/part.main.php
 msgid "Loading ..."
@@ -40,6 +73,10 @@ msgstr "Successivo"
 msgid "Nothing in here. Upload your music!"
 msgstr "Non c'è niente qui. Carica la tua musica!"
 
+#: ../templates/fake-template.php
+msgid "Path to your music collection"
+msgstr "Percorso alla tua collezione musicale"
+
 #: ../templates/main.php
 msgid "Pause"
 msgstr "Pausa"
@@ -56,6 +93,14 @@ msgstr "Precedente"
 msgid "Repeat"
 msgstr "Ripeti"
 
+#: ../templates/fake-template.php
+msgid "Revoke API password"
+msgstr "Riprendi la password API"
+
+#: ../templates/part.main.php
+msgid "Scanning ..."
+msgstr "Scansione in corso..."
+
 #: ../templates/part.main.php
 msgid "Show all {{ trackcount }} songs ..."
 msgid_plural "Show all {{ trackcount }} songs ..."
@@ -71,9 +116,25 @@ msgid "Shuffle"
 msgstr "Mescola"
 
 #: ../templates/fake-template.php
+msgid ""
+"This setting restricts the shown music in the web interface of the music "
+"app."
+msgstr "Questa impostazione filtra la musica mostrata nell'interfaccia web dell'applicazione musicale."
+
+#: ../templates/fake-template.php
+msgid "Tracks"
+msgstr "Tracce"
+
+#: ../templates/fake-template.php
 msgid "Unknown album"
 msgstr "Album sconosciuto"
 
 #: ../templates/fake-template.php
 msgid "Unknown artist"
 msgstr "Artista sconosciuto"
+
+#: ../templates/fake-template.php
+msgid ""
+"Use your username and following password to connect to this Ampache "
+"instance:"
+msgstr "Usa il tuo username e la password per entrare in questo caso in Ampache:"
