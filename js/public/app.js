@@ -461,7 +461,7 @@ angular.module('Music').controller('PlayerController',
 			offsetX = $event.offsetX || $event.originalEvent.layerX;
 		sound.setPosition(offsetX * sound.durationEstimate / $event.currentTarget.clientWidth);
         };
-	
+
 	playlistService.subscribe('play', function(){
 		// fetch track and start playing
 		$scope.next();
