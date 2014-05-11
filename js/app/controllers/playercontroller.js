@@ -279,7 +279,7 @@ angular.module('Music').controller('PlayerController',
 				onbufferchange: function() {
 					$scope.setBuffering(this.isBuffering);
 				},
-				volume: 50
+				volume: 100
 			});
 			$scope.player.play('ownCloudSound');
 		} else {
