@@ -3,33 +3,23 @@
 /**
  * ownCloud - Music app
  *
- * @author Morris Jobke
- * @copyright 2013 Morris Jobke <morris.jobke@gmail.com>
+ * This file is licensed under the Affero General Public License version 3 or
+ * later. See the COPYING file.
  *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE
- * License as published by the Free Software Foundation; either
- * version 3 of the License, or any later version.
- *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU AFFERO GENERAL PUBLIC LICENSE for more details.
- *
- * You should have received a copy of the GNU Affero General Public
- * License along with this library.  If not, see <http://www.gnu.org/licenses/>.
- *
+ * @author Morris Jobke <hey@morrisjobke.de>
+ * @copyright Morris Jobke 2013, 2014
  */
 
 namespace OCA\Music\Db;
 
+use \OCA\Music\AppFramework\Core\Db;
+use \OCA\Music\AppFramework\Db\IMapper;
 use \OCA\Music\AppFramework\Db\Mapper;
-use \OCA\Music\Core\API;
 
-class ArtistMapper extends Mapper {
+class ArtistMapper extends Mapper implements IMapper {
 
-	public function __construct(API $api){
-		parent::__construct($api, 'music_artists');
+	public function __construct(Db $db){
+		parent::__construct($db, 'music_artists', '\OCA\Music\Db\Artist');
 	}
 
 	private function makeSelectQuery($condition=null){

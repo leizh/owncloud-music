@@ -1,10 +1,12 @@
 <?php
+\OCP\Util::addScript('core', 'placeholder');
+\OCP\Util::addScript('3rdparty', 'md5/md5.min');
 \OCP\Util::addScript('music', 'vendor/underscore/underscore-min');
 \OCP\Util::addScript('music', 'vendor/angular/angular.min');
 \OCP\Util::addScript('music', 'vendor/angular/angular-animate.min');
-\OCP\Util::addScript('music', 'vendor/soundmanager/soundmanager2');
-\OCP\Util::addScript('music', 'vendor/restangular/restangular.min');
-\OCP\Util::addScript('music', 'vendor/angular-gettext/angular-gettext.min');
+\OCP\Util::addScript('music', 'vendor/soundmanager/script/soundmanager2-nodebug-jsmin');
+\OCP\Util::addScript('music', 'vendor/restangular/dist/restangular.min');
+\OCP\Util::addScript('music', 'vendor/angular-gettext/dist/angular-gettext.min');
 \OCP\Util::addScript('music', 'public/app');
 
 \OCP\Util::addStyle('music', 'style-playerbar');
@@ -12,6 +14,7 @@
 \OCP\Util::addStyle('music', 'style');
 \OCP\Util::addStyle('music', 'mobile');
 \OCP\Util::addStyle('music', 'tablet');
+\OCP\Util::addStyle('music', 'stable6+-fixes');
 ?>
 
 <div id="app" ng-app="Music" ng-cloak ng-init="started = false; lang = '<?php p($_['lang']) ?>'">
@@ -22,7 +25,7 @@
 
 		<div id="playerbar" ng-controller="PlayerController" ng-class="{started: started}">
 			<div id="play-controls">
-				<img  ng-click="prev()"class="control small svg" alt="{{'Previous' | translate }}"
+				<img ng-click="prev()" class="control small svg" alt="{{'Previous' | translate }}"
 					src="<?php p(OCP\image_path('music', 'play-previous.svg')) ?>" />
 				<img ng-click="toggle()" ng-hide="playing" class="control svg" alt="{{'Play' | translate }}"
 					src="<?php p(OCP\image_path('music', 'play-big.svg')) ?>" />
@@ -74,7 +77,9 @@
 		</div>
 
 		<div ng-show="artists" class="alphabet-navigation" ng-class="{started: started}" resize>
-			<a scroll-to="{{ letter }}" ng-repeat="letter in letters" ng-class="{available: letterAvailable[letter]}">{{ letter }}</a>
+			<a scroll-to="{{ letter }}" ng-repeat="letter in letters" ng-class="{available: letterAvailable[letter], filler: ($index % 2) == 1}">
+				<span class="letter-content">{{ letter }}</span>
+			</a>
 		</div>
 
 	</div>

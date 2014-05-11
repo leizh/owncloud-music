@@ -3,22 +3,11 @@
 /**
  * ownCloud - Music app
  *
- * @author Morris Jobke
- * @copyright 2013 Morris Jobke <morris.jobke@gmail.com>
+ * This file is licensed under the Affero General Public License version 3 or
+ * later. See the COPYING file.
  *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE
- * License as published by the Free Software Foundation; either
- * version 3 of the License, or any later version.
- *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU AFFERO GENERAL PUBLIC LICENSE for more details.
- *
- * You should have received a copy of the GNU Affero General Public
- * License along with this library.  If not, see <http://www.gnu.org/licenses/>.
- *
+ * @author Morris Jobke <hey@morrisjobke.de>
+ * @copyright Morris Jobke 2013, 2014
  */
 
 /**
@@ -30,12 +19,12 @@
 
 ?>
 
-<fieldset class="personalblock" id="music-user">
+<div class="section" id="music-user">
 	<h2><?php p($l->t('Music')); ?></h2>
 	<div>
 		<label for="music-path"><?php p($l->t('Path to your music collection')); ?></label>
 		<input type="text" id="music-path" value="<?php p($_['path']); ?>" />
-		<p><em><?php p($l->t('This setting restricts the shown music in the web interface of the music app.')); ?>.</em></p>
+		<p><em><?php p($l->t('This setting specifies the folder which will be scanned for music.')); ?>.</em></p>
 	</div>
 	<h3>Ampache</h3>
 	<div class="warning">
@@ -44,7 +33,7 @@
 		'I would also like to have a list of clients to test with. Thanks')); ?>
 	</div>
 	<div>
-		<code><?php p(\OC_Helper::makeURLAbsolute(\OC_Helper::linkToRoute('music_ampache')));?></code><br />
+		<code><?php p(\OC_Helper::makeURLAbsolute(\OC_Helper::linkToRoute('music.ampache.ampache')));?></code><br />
 		<em><?php p($l->t('Use this address to browse your music collection from any Ampache compatible player.')); ?></em>
 	</div>
 	<div>
@@ -76,4 +65,4 @@
 			<span></span>
 		</div>
 	</div>
-</fieldset>
+</div>

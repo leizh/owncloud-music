@@ -3,33 +3,23 @@
 /**
  * ownCloud - Music app
  *
- * @author Morris Jobke
- * @copyright 2013 Morris Jobke <morris.jobke@gmail.com>
+ * This file is licensed under the Affero General Public License version 3 or
+ * later. See the COPYING file.
  *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE
- * License as published by the Free Software Foundation; either
- * version 3 of the License, or any later version.
- *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU AFFERO GENERAL PUBLIC LICENSE for more details.
- *
- * You should have received a copy of the GNU Affero General Public
- * License along with this library.  If not, see <http://www.gnu.org/licenses/>.
- *
+ * @author Morris Jobke <hey@morrisjobke.de>
+ * @copyright Morris Jobke 2013, 2014
  */
 
 namespace OCA\Music\Db;
 
+use \OCA\Music\AppFramework\Core\Db;
+use \OCA\Music\AppFramework\Db\IMapper;
 use \OCA\Music\AppFramework\Db\Mapper;
-use \OCA\Music\Core\API;
 
-class TrackMapper extends Mapper {
+class TrackMapper extends Mapper implements IMapper {
 
-	public function __construct(API $api){
-		parent::__construct($api, 'music_tracks');
+	public function __construct(DB $db){
+		parent::__construct($db, 'music_tracks', '\OCA\Music\Db\Track');
 	}
 
 	private function makeSelectQueryWithoutUserId($condition){
@@ -40,17 +30,6 @@ class TrackMapper extends Mapper {
 			'WHERE ' . $condition;
 	}
 
-	private function makeSelectQueryWithFileInfo($condition){
-		return 'SELECT `track`.`title`, `track`.`number`, `track`.`id`, '.
-				'`track`.`artist_id`, `track`.`album_id`, `track`.`length`, '.
-				'`track`.`file_id`, `track`.`bitrate`, `track`.`mimetype`, '.
-				'`file`.`path` as `filePath`, `file`.`size` as `fileSize` '.
-				'FROM `*PREFIX*music_tracks` `track` '.
-				'INNER JOIN `*PREFIX*filecache` `file` '.
-				'ON `track`.`file_id` = `file`.`fileid` '.
-				'WHERE `track`.`user_id` = ? ' . $condition;
-	}
-
 	private function makeSelectQuery($condition=null){
 		return $this->makeSelectQueryWithoutUserId('`track`.`user_id` = ? ' . $condition);
 	}
@@ -59,12 +38,6 @@ class TrackMapper extends Mapper {
 		$sql = $this->makeSelectQuery();
 		$params = array($userId);
 		return $this->findEntities($sql, $params, $limit, $offset);
-	}
-
-	public function findAllByPath($path, $userId){
-		$sql = $this->makeSelectQueryWithFileInfo('AND `file`.`path` LIKE ?');
-		$params = array($userId, $path . '%');
-		return $this->findEntities($sql, $params);
 	}
 
 	public function findAllByArtist($artistId, $userId){
@@ -90,7 +63,7 @@ class TrackMapper extends Mapper {
 	}
 
 	public function findByFileId($fileId, $userId){
-		$sql = $this->makeSelectQueryWithFileInfo('AND `track`.`file_id` = ?');
+		$sql = $this->makeSelectQuery('AND `track`.`file_id` = ?');
 		$params = array($userId, $fileId);
 		return $this->findEntity($sql, $params);
 	}

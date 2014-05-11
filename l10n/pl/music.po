@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: ownCloud\n"
-"PO-Revision-Date: 2014-03-25 06:41+0000\n"
+"PO-Revision-Date: 2014-05-11 05:03+0000\n"
 "Last-Translator: bobie <maciej.przybecki@gmail.com>\n"
 "Language-Team: Polish (http://www.transifex.com/projects/p/owncloud/language/pl/)\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -115,11 +115,13 @@ msgstr "Pokaz mniej ..."
 msgid "Shuffle"
 msgstr "Losowo"
 
+#: ../js/public/app.js
+msgid "Some not playable tracks were skipped."
+msgstr "Niektóre nieodtwarzalne ścieżki zostały pominięte."
+
 #: ../templates/fake-template.php
-msgid ""
-"This setting restricts the shown music in the web interface of the music "
-"app."
-msgstr "To ustawienie ogranicza muzykę pokazaną w przeglądarce w aplikacji muzycznej"
+msgid "This setting specifies the folder which will be scanned for music."
+msgstr "To ustawienie określa folder, który będzie skanowany pod kątem muzyki."
 
 #: ../templates/fake-template.php
 msgid "Tracks"
@@ -132,6 +134,12 @@ msgstr "Nieznany album"
 #: ../templates/fake-template.php
 msgid "Unknown artist"
 msgstr "Nieznany artysta"
+
+#: ../templates/fake-template.php
+msgid ""
+"Use this address to browse your music collection from any Ampache compatible"
+" player."
+msgstr "Użyj tego adresu aby przeglądać swoją kolekcję muzyczną na dowolnym odtwarzaczu kompatybilnym z Ampache."
 
 #: ../templates/fake-template.php
 msgid ""

@@ -3,38 +3,32 @@
 /**
  * ownCloud - Music app
  *
- * @author Morris Jobke
- * @copyright 2013 Morris Jobke <morris.jobke@gmail.com>
+ * This file is licensed under the Affero General Public License version 3 or
+ * later. See the COPYING file.
  *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE
- * License as published by the Free Software Foundation; either
- * version 3 of the License, or any later version.
- *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU AFFERO GENERAL PUBLIC LICENSE for more details.
- *
- * You should have received a copy of the GNU Affero General Public
- * License along with this library.  If not, see <http://www.gnu.org/licenses/>.
- *
+ * @author Morris Jobke <hey@morrisjobke.de>
+ * @copyright Morris Jobke 2013, 2014
  */
 
 namespace OCA\Music\BusinessLayer;
 
-use \OCA\Music\Db\AlbumMapper;
-use \OCA\Music\Db\Album;
-
-use \OCA\Music\AppFramework\Core\API;
+use \OCA\Music\AppFramework\BusinessLayer\BusinessLayer;
+use \OCA\Music\AppFramework\BusinessLayer\BusinessLayerException;
+use \OCA\Music\AppFramework\Core\Logger;
 use \OCA\Music\AppFramework\Db\DoesNotExistException;
 use \OCA\Music\AppFramework\Db\MultipleObjectsReturnedException;
 
 
+use \OCA\Music\Db\AlbumMapper;
+use \OCA\Music\Db\Album;
+
 class AlbumBusinessLayer extends BusinessLayer {
 
-	public function __construct(AlbumMapper $albumMapper, API $api){
-		parent::__construct($albumMapper, $api);
+	private $logger;
+
+	public function __construct(AlbumMapper $albumMapper, Logger $logger){
+		parent::__construct($albumMapper);
+		$this->logger = $logger;
 	}
 
 	/**
@@ -58,16 +52,6 @@ class AlbumBusinessLayer extends BusinessLayer {
 	public function findAll($userId){
 		$albums = $this->mapper->findAll($userId);
 		return $this->injectArtists($albums);
-	}
-
-	/**
-	 * Returns all albums
-	 * @param string $userId the name of the user
-	 * @return array of albums
-	 */
-	public function findAllWithFileInfo($userId){
-		$albums = $this->mapper->findAllWithFileInfo($userId);
-		return $albums;
 	}
 
 	/**
@@ -100,19 +84,19 @@ class AlbumBusinessLayer extends BusinessLayer {
 	 * @param string $name the name of the album
 	 * @param string $year the year of the release
 	 * @return \OCA\Music\Db\Album
-	 * @throws \OCA\Music\BusinessLayer\BusinessLayerException
+	 * @throws \OCA\Music\AppFramework\BusinessLayer\BusinessLayerException
 	 */
 	public function addAlbumIfNotExist($name, $year, $artistId, $userId){
 		try {
 			$album = $this->mapper->findAlbum($name, $year, $artistId, $userId);
-			$this->api->log('addAlbumIfNotExist - exists - ID: ' . $album->getId(), 'debug');
+			$this->logger->log('addAlbumIfNotExist - exists - ID: ' . $album->getId(), 'debug');
 		} catch(DoesNotExistException $ex){
 			$album = new Album();
 			$album->setName($name);
 			$album->setYear($year);
 			$album->setUserId($userId);
 			$album = $this->mapper->insert($album);
-			$this->api->log('addAlbumIfNotExist - added - ID: ' . $album->getId(), 'debug');
+			$this->logger->log('addAlbumIfNotExist - added - ID: ' . $album->getId(), 'debug');
 		} catch(MultipleObjectsReturnedException $ex){
 			throw new BusinessLayerException($ex->getMessage());
 		}

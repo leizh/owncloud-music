@@ -3,22 +3,11 @@
 /**
  * ownCloud - Music app
  *
- * @author Morris Jobke
- * @copyright 2013 Morris Jobke <morris.jobke@gmail.com>
+ * This file is licensed under the Affero General Public License version 3 or
+ * later. See the COPYING file.
  *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE
- * License as published by the Free Software Foundation; either
- * version 3 of the License, or any later version.
- *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU AFFERO GENERAL PUBLIC LICENSE for more details.
- *
- * You should have received a copy of the GNU Affero General Public
- * License along with this library.  If not, see <http://www.gnu.org/licenses/>.
- *
+ * @author Morris Jobke <hey@morrisjobke.de>
+ * @copyright Morris Jobke 2013, 2014
  */
 
 namespace OCA\Music\Db;
@@ -36,7 +25,7 @@ class ArtistMapperTest extends \OCA\Music\AppFramework\Utility\MapperTestUtility
 	{
 		$this->beforeEach();
 
-		$this->mapper = new ArtistMapper($this->api);
+		$this->mapper = new ArtistMapper($this->db);
 
 		// create mock items
 		$artist1 = new Artist();
@@ -113,7 +102,7 @@ class ArtistMapperTest extends \OCA\Music\AppFramework\Utility\MapperTestUtility
 	public function testDeleteByIdNone(){
 		$artistIds = array();
 
-		$this->api->expects($this->never())
+		$this->db->expects($this->never())
 			->method('prepareQuery');
 
 		$this->mapper->deleteById($artistIds);

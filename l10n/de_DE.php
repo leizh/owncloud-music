@@ -23,10 +23,12 @@ $TRANSLATIONS = array(
 "_Show all {{ trackcount }} songs ..._::_Show all {{ trackcount }} songs ..._" => array("{{ trackcount }} Lied anzeigen  ...","Alle {{ trackcount }} Lieder anzeigen  ..."),
 "Show less ..." => "Weniger anzeigen ...",
 "Shuffle" => "Zufallswiedergabe",
-"This setting restricts the shown music in the web interface of the music app." => "Diese Einstellung beschränkt die angezeigte Musik im Webinterface der Musik-Applikation",
+"Some not playable tracks were skipped." => "Einige nicht abspielbare Titel wurden übersprungen.",
+"This setting specifies the folder which will be scanned for music." => "Diese Einstellung spezifiziert den zu durchsuchenden Musikordner.",
 "Tracks" => "Titel",
 "Unknown album" => "Unbekanntes Album",
 "Unknown artist" => "Unbekannter Künstler",
+"Use this address to browse your music collection from any Ampache compatible player." => "Nutzen Sie diese Adresse zum Durchsuchen Ihrer Musiksammlung auf einem beliebigen Ampache-kompatiblen Abspieler.",
 "Use your username and following password to connect to this Ampache instance:" => "Nutzen Sie Ihren Benutzernamen und folgendes Passwort, um zu dieser Ampache-Instanz zu verbinden:"
 );
 $PLURAL_FORMS = "nplurals=2; plural=(n != 1);";

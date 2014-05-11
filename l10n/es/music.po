@@ -3,12 +3,13 @@
 # Art O. Pal <artopal@fastmail.fm>, 2013-2014
 # japaol <japaol@gmail.com>, 2013
 # Maenso <balero_arana@hotmail.com>, 2013
+# mreyesca <mreyesca@luthcueit.onmicrosoft.com>, 2014
 # Rubén del Campo <yo@rubendelcampo.es>, 2013
 msgid ""
 msgstr ""
 "Project-Id-Version: ownCloud\n"
-"PO-Revision-Date: 2014-03-25 05:30+0000\n"
-"Last-Translator: I Robot\n"
+"PO-Revision-Date: 2014-05-11 05:03+0000\n"
+"Last-Translator: mreyesca <mreyesca@luthcueit.onmicrosoft.com>\n"
 "Language-Team: Spanish (http://www.transifex.com/projects/p/owncloud/language/es/)\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -116,11 +117,13 @@ msgstr "Mostrar menos..."
 msgid "Shuffle"
 msgstr "Mezclar"
 
+#: ../js/public/app.js
+msgid "Some not playable tracks were skipped."
+msgstr "No se pudieron reproducir algunas canciones."
+
 #: ../templates/fake-template.php
-msgid ""
-"This setting restricts the shown music in the web interface of the music "
-"app."
-msgstr "Esta configuración restringe la música mostrada en la interfaz web de la aplicación de música."
+msgid "This setting specifies the folder which will be scanned for music."
+msgstr "Esta configuración especifica la carpeta en la cuál se escaneará la música"
 
 #: ../templates/fake-template.php
 msgid "Tracks"
@@ -133,6 +136,12 @@ msgstr "Álbum desconocido"
 #: ../templates/fake-template.php
 msgid "Unknown artist"
 msgstr "Artista desconocido"
+
+#: ../templates/fake-template.php
+msgid ""
+"Use this address to browse your music collection from any Ampache compatible"
+" player."
+msgstr "Use esta dirección para explorar su colección de música desde cualquier reproductor compatible con Ampache."
 
 #: ../templates/fake-template.php
 msgid ""

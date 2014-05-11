@@ -4,8 +4,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: ownCloud\n"
-"PO-Revision-Date: 2014-03-25 05:30+0000\n"
-"Last-Translator: I Robot\n"
+"PO-Revision-Date: 2014-05-11 05:03+0000\n"
+"Last-Translator: Jiri Grönroos <jiri.gronroos@iki.fi>\n"
 "Language-Team: Finnish (Finland) (http://www.transifex.com/projects/p/owncloud/language/fi_FI/)\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -113,11 +113,13 @@ msgstr "Näytä vähemmän..."
 msgid "Shuffle"
 msgstr "Sekoita"
 
+#: ../js/public/app.js
+msgid "Some not playable tracks were skipped."
+msgstr "Ohitettiin joitain sellaisia kappaleita, joita ei voi toistaa."
+
 #: ../templates/fake-template.php
-msgid ""
-"This setting restricts the shown music in the web interface of the music "
-"app."
-msgstr "Tämä asetus rajoittaa näytettävää musiikkia musiikkisovelluksen verkkokäyttöliittymässä."
+msgid "This setting specifies the folder which will be scanned for music."
+msgstr "Tämä asetus määrittää kansion, josta musiikkia etsitään."
 
 #: ../templates/fake-template.php
 msgid "Tracks"
@@ -130,6 +132,12 @@ msgstr "Tuntematon levy"
 #: ../templates/fake-template.php
 msgid "Unknown artist"
 msgstr "Tuntematon esittäjä"
+
+#: ../templates/fake-template.php
+msgid ""
+"Use this address to browse your music collection from any Ampache compatible"
+" player."
+msgstr "Käytä tätä osoitetta selataksesi musiikkikokoelmaasi miltä tahansa Ampache-yhteensopivalta soittimelta."
 
 #: ../templates/fake-template.php
 msgid ""

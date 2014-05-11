@@ -1,11 +1,17 @@
 <?php
+
 /**
- * Copyright (c) 2013 Thomas Müller <thomas.mueller@tmit.eu>
- * Copyright (c) 2013 Bart Visscher <bartv@thisnet.nl>
- * Copyright (c) 2014 Leizh <leizh@free.fr>
+ * ownCloud - Music app
+ *
  * This file is licensed under the Affero General Public License version 3 or
- * later.
- * See the COPYING-README file.
+ * later. See the COPYING file.
+ *
+ * @author Thomas Müller <thomas.mueller@tmit.eu>
+ * @author Bart Visscher <bartv@thisnet.nl>
+ * @author Leizh <leizh@free.fr>
+ * @copyright Thomas Müller 2013
+ * @copyright Bart Visscher 2013
+ * @copyright Leizh 2014
  */
 
 namespace OCA\Music\Command;
@@ -16,18 +22,20 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
-use \OCA\Music\DependencyInjection\DIContainer;
+use \OCA\Music\App\Music;
 
 class Scan extends Command {
 	/**
 	 * @var \OC\User\Manager $userManager
 	 */
 	private $userManager;
-	private $container;
+	private $scanner;
 
 	public function __construct(\OC\User\Manager $userManager) {
 		$this->userManager = $userManager;
-		$this->container = new DIContainer();
+
+		$app = new Music();
+		$this->scanner = $app->getContainer()->query('Scanner');
 		parent::__construct();
 	}
 
@@ -52,7 +60,7 @@ class Scan extends Command {
 	protected function execute(InputInterface $input, OutputInterface $output) {
 		$scanner = $this->container['Scanner'];
 
-		$scanner->listen('\OCA\Music\Utility\Scanner', 'update', function($path) use ($output) {
+		$this->scanner->listen('\OCA\Music\Utility\Scanner', 'update', function($path) use ($output) {
 			$output->writeln("Scanning <info>$path</info>");
 		});
 
@@ -69,7 +77,7 @@ class Scan extends Command {
 			\OC_Util::tearDownFS();
 			\OC_Util::setupFS($user);
 			$output->writeln("Start scan for <info>$user</info>");
-			$scanner->rescan($user, true);
+			$this->scanner->rescan($user, true);
 		}
 	}
 }

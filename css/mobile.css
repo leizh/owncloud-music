@@ -1,11 +1,19 @@
-/* Copyright (c) 2014, Jan-Christoph Borchardt, http://jancborchardt.net
- This file is licensed under the Affero General Public License version 3
- or later. See the COPYING-README file. */
+/**
+ * ownCloud - Music app
+ *
+ * This file is licensed under the Affero General Public License version 3 or
+ * later. See the COPYING file.
+ *
+ * @author Morris Jobke <hey@morrisjobke.de>
+ * @author Jan-Christoph Borchardt, http://jancborchardt.net
+ * @copyright Morris Jobke 2013, 2014
+ * @copyright Jan-Christoph Borchardt 2014
+ */
 
 @media only screen and (max-width: 768px) {
 
 #app-content.started {
-	top: 50px;
+	top: 65px;
 }
 
 .artist-area {
@@ -13,9 +21,7 @@
 }
 
 .artist-area > h1 {
-	margin-left: 14px;
-	font-size: 34px;
-	line-height: 36px;
+	margin-left: 8px;
 }
 
 /* adjust album area to screen width */
@@ -66,7 +72,7 @@
 }
 /* align track title to the left with album title */
 .track-list > li {
-	padding-left: 25px;
+	padding-left: 60px;
 }
 
 .track-list > li > .play.playing {

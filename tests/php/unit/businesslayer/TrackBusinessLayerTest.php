@@ -3,22 +3,11 @@
 /**
  * ownCloud - Music app
  *
- * @author Morris Jobke
- * @copyright 2013 Morris Jobke <morris.jobke@gmail.com>
+ * This file is licensed under the Affero General Public License version 3 or
+ * later. See the COPYING file.
  *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE
- * License as published by the Free Software Foundation; either
- * version 3 of the License, or any later version.
- *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU AFFERO GENERAL PUBLIC LICENSE for more details.
- *
- * You should have received a copy of the GNU Affero General Public
- * License along with this library.  If not, see <http://www.gnu.org/licenses/>.
- *
+ * @author Morris Jobke <hey@morrisjobke.de>
+ * @copyright Morris Jobke 2013, 2014
  */
 
 namespace OCA\Music\BusinessLayer;
@@ -29,10 +18,10 @@ use \OCA\Music\AppFramework\Db\MultipleObjectsReturnedException;
 use \OCA\Music\Db\Track;
 
 
-class TrackBusinessLayerTest extends \OCA\Music\AppFramework\Utility\TestUtility {
+class TrackBusinessLayerTest extends \PHPUnit_Framework_TestCase {
 
-	private $api;
 	private $mapper;
+	private $logger;
 	private $trackBusinessLayer;
 	private $userId;
 	private $artistId;
@@ -40,11 +29,13 @@ class TrackBusinessLayerTest extends \OCA\Music\AppFramework\Utility\TestUtility
 
 
 	protected function setUp(){
-		$this->api = $this->getAPIMock();
 		$this->mapper = $this->getMockBuilder('\OCA\Music\Db\TrackMapper')
 			->disableOriginalConstructor()
 			->getMock();
-		$this->trackBusinessLayer = new TrackBusinessLayer($this->mapper, $this->api);
+		$this->logger = $this->getMockBuilder('\OCA\Music\AppFramework\Core\Logger')
+			->disableOriginalConstructor()
+			->getMock();
+		$this->trackBusinessLayer = new TrackBusinessLayer($this->mapper, $this->logger);
 		$this->userId = 'jack';
 		$this->artistId = 3;
 		$this->albumId = 3;
@@ -152,7 +143,7 @@ class TrackBusinessLayerTest extends \OCA\Music\AppFramework\Utility\TestUtility
 		$this->mapper->expects($this->never())
 			->method('insert');
 
-		$this->setExpectedException('\OCA\Music\BusinessLayer\BusinessLayerException');
+		$this->setExpectedException('\OCA\Music\AppFramework\BusinessLayer\BusinessLayerException');
 		$this->trackBusinessLayer->addTrackIfNotExist(null, null, null, null, $fileId, null, $this->userId);
 	}
 

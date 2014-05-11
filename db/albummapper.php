@@ -3,35 +3,24 @@
 /**
  * ownCloud - Music app
  *
- * @author Morris Jobke
- * @copyright 2013 Morris Jobke <morris.jobke@gmail.com>
+ * This file is licensed under the Affero General Public License version 3 or
+ * later. See the COPYING file.
  *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE
- * License as published by the Free Software Foundation; either
- * version 3 of the License, or any later version.
- *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU AFFERO GENERAL PUBLIC LICENSE for more details.
- *
- * You should have received a copy of the GNU Affero General Public
- * License along with this library.  If not, see <http://www.gnu.org/licenses/>.
- *
+ * @author Morris Jobke <hey@morrisjobke.de>
+ * @copyright Morris Jobke 2013, 2014
  */
 
 namespace OCA\Music\Db;
 
-use \OCA\Music\AppFramework\Db\Mapper;
-use \OCA\Music\Core\API;
-
+use \OCA\Music\AppFramework\Core\Db;
 use \OCA\Music\AppFramework\Db\DoesNotExistException;
+use \OCA\Music\AppFramework\Db\IMapper;
+use \OCA\Music\AppFramework\Db\Mapper;
 
-class AlbumMapper extends Mapper {
+class AlbumMapper extends Mapper implements IMapper {
 
-	public function __construct(API $api){
-		parent::__construct($api, 'music_albums');
+	public function __construct(Db $db){
+		parent::__construct($db, 'music_albums', '\OCA\Music\Db\Album');
 	}
 
 	private function makeSelectQuery($condition=null){
@@ -41,23 +30,8 @@ class AlbumMapper extends Mapper {
 			'WHERE `album`.`user_id` = ? ' . $condition;
 	}
 
-	private function makeSelectQueryWithFileInfo($condition=null){
-		return 'SELECT `album`.`name`, `album`.`year`, `album`.`id`, '.
-				'`album`.`cover_file_id`, `file`.`path` as `coverFilePath` '.
-				'FROM `*PREFIX*music_albums` `album` '.
-				'LEFT OUTER JOIN `*PREFIX*filecache` `file` '.
-				'ON `album`.`cover_file_id` = `file`.`fileid` ' .
-				'AND `album`.`user_id` = ? ' . $condition;
-	}
-
 	public function findAll($userId){
 		$sql = $this->makeSelectQuery();
-		$params = array($userId);
-		return $this->findEntities($sql, $params);
-	}
-
-	public function findAllWithFileInfo($userId){
-		$sql = $this->makeSelectQueryWithFileInfo();
 		$params = array($userId);
 		return $this->findEntities($sql, $params);
 	}
@@ -124,24 +98,29 @@ class AlbumMapper extends Mapper {
 			'WHERE `album`.`user_id` = ? ';
 		$params = array($userId);
 
+		// add artist id check
 		if ($artistId === null) {
 			$sql .= 'AND `artists`.`artist_id` IS NULL ';
 		} else {
 			$sql .= 'AND `artists`.`artist_id` = ? ';
 			array_push($params, $artistId);
 		}
-		if($albumName === null && $albumYear === null) {
-			$sql .= 'AND `album`.`name` IS NULL AND `album`.`year` IS NULL';
-		} else if($albumYear === null) {
-			$sql .= 'AND `album`.`name` = ? AND `album`.`year` IS NULL';
-			array_push($params, $albumName);
-		} else if($albumName === null) {
-			$sql .= 'AND `album`.`name` IS NULL AND `album`.`year` = ?';
-			array_push($params, $albumYear);
+
+		if ($albumName === null) {
+			$sql .= 'AND `album`.`name` IS NULL ';
 		} else {
-			$sql .= 'AND `album`.`name` = ? AND `album`.`year` = ?';
-			array_push($params, $albumName, $albumYear);
+			$sql .= 'AND `album`.`name` = ? ';
+			array_push($params, $albumName);
 		}
+
+		// add album year check
+		if ($albumYear === null) {
+			$sql .= 'AND `album`.`year` IS NULL ';
+		} else {
+			$sql .= 'AND `album`.`year` = ? ';
+			array_push($params, $albumYear);
+		}
+
 		return $this->findEntity($sql, $params);
 	}
 

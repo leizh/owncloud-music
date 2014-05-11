@@ -1,11 +1,13 @@
 # 
 # Translators:
 # phy <transifex@phy25.com>, 2014
+# Xuetian Weng <wengxt@gmail.com>, 2014
+# 攀 张 <zhangguangpan@gmail.com>, 2014
 msgid ""
 msgstr ""
 "Project-Id-Version: ownCloud\n"
-"PO-Revision-Date: 2014-03-25 05:30+0000\n"
-"Last-Translator: I Robot\n"
+"PO-Revision-Date: 2014-05-11 05:03+0000\n"
+"Last-Translator: Xuetian Weng <wengxt@gmail.com>\n"
 "Language-Team: Chinese (China) (http://www.transifex.com/projects/p/owncloud/language/zh_CN/)\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -14,11 +16,11 @@ msgstr ""
 
 #: ../templates/fake-template.php
 msgid "Albums"
-msgstr ""
+msgstr "专辑页"
 
 #: ../templates/fake-template.php
 msgid "Artists"
-msgstr ""
+msgstr "艺术家"
 
 #: ../templates/main.php
 msgid "Delete"
@@ -30,11 +32,11 @@ msgstr "描述"
 
 #: ../templates/fake-template.php
 msgid "Description (e.g. App name)"
-msgstr ""
+msgstr "描述 (例如 App 名称)"
 
 #: ../templates/fake-template.php
 msgid "Generate API password"
-msgstr ""
+msgstr "生成 API 密码"
 
 #: ../templates/fake-template.php
 msgid ""
@@ -45,7 +47,7 @@ msgstr ""
 
 #: ../templates/fake-template.php
 msgid "Invalid path"
-msgstr ""
+msgstr "无效路径"
 
 #: ../templates/fake-template.php
 msgid ""
@@ -97,7 +99,7 @@ msgstr ""
 
 #: ../templates/part.main.php
 msgid "Scanning ..."
-msgstr ""
+msgstr "扫描中 ..."
 
 #: ../templates/part.main.php
 msgid "Show all {{ trackcount }} songs ..."
@@ -112,15 +114,17 @@ msgstr "显示概要"
 msgid "Shuffle"
 msgstr "随机"
 
+#: ../js/public/app.js
+msgid "Some not playable tracks were skipped."
+msgstr ""
+
 #: ../templates/fake-template.php
-msgid ""
-"This setting restricts the shown music in the web interface of the music "
-"app."
+msgid "This setting specifies the folder which will be scanned for music."
 msgstr ""
 
 #: ../templates/fake-template.php
 msgid "Tracks"
-msgstr ""
+msgstr "音轨"
 
 #: ../templates/fake-template.php
 msgid "Unknown album"
@@ -129,6 +133,12 @@ msgstr "未知专辑"
 #: ../templates/fake-template.php
 msgid "Unknown artist"
 msgstr "未知艺术家"
+
+#: ../templates/fake-template.php
+msgid ""
+"Use this address to browse your music collection from any Ampache compatible"
+" player."
+msgstr ""
 
 #: ../templates/fake-template.php
 msgid ""
