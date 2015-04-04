@@ -1,10 +1,10 @@
 # 
 # Translators:
-# miroj <jmiroslav@softhome.net>, 2013
+# Miroslav Jovanovic <jmiroslav@softhome.net>, 2013-2014
 msgid ""
 msgstr ""
 "Project-Id-Version: ownCloud\n"
-"PO-Revision-Date: 2014-05-11 05:03+0000\n"
+"PO-Revision-Date: 2015-02-05 19:23+0000\n"
 "Last-Translator: I Robot\n"
 "Language-Team: Macedonian (http://www.transifex.com/projects/p/owncloud/language/mk/)\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -12,42 +12,38 @@ msgstr ""
 "Language: mk\n"
 "Plural-Forms: nplurals=2; plural=(n % 10 == 1 && n % 100 != 11) ? 0 : 1;\n"
 
-#: ../templates/fake-template.php
+#: ../templates/fake-template.php:7
 msgid "Albums"
-msgstr ""
+msgstr "Албуми"
 
-#: ../templates/fake-template.php
+#: ../templates/fake-template.php:6
 msgid "Artists"
-msgstr ""
+msgstr "Артисти"
 
-#: ../templates/main.php
-msgid "Delete"
-msgstr "Избриши"
-
-#: ../templates/fake-template.php
+#: ../templates/fake-template.php:13
 msgid "Description"
 msgstr "Опис"
 
-#: ../templates/fake-template.php
+#: ../templates/fake-template.php:14
 msgid "Description (e.g. App name)"
-msgstr ""
+msgstr "Опис (нпр. име на апликацијата)"
 
-#: ../templates/fake-template.php
+#: ../templates/fake-template.php:15
 msgid "Generate API password"
-msgstr ""
+msgstr "Генерирај API лозинка"
 
-#: ../templates/fake-template.php
+#: ../templates/fake-template.php:18
 msgid ""
 "Here you can generate passwords to use with the Ampache API, because they "
 "can't be stored in a really secure way due to the design of the Ampache API."
 " You can generate as many passwords as you want and revoke them anytime."
 msgstr ""
 
-#: ../templates/fake-template.php
+#: ../templates/fake-template.php:10
 msgid "Invalid path"
-msgstr ""
+msgstr "Грешна патека"
 
-#: ../templates/fake-template.php
+#: ../templates/fake-template.php:19
 msgid ""
 "Keep in mind, that the Ampache API is just a preview and is unstable. Feel "
 "free to report your experience with this feature in the corresponding <a "
@@ -55,91 +51,69 @@ msgid ""
 " like to have a list of clients to test with. Thanks"
 msgstr ""
 
-#: ../templates/main.php ../templates/part.main.php
-msgid "Loading ..."
-msgstr "Вчитувам ..."
-
-#: ../templates/fake-template.php
+#: ../templates/fake-template.php:3
 msgid "Music"
 msgstr "Музика"
 
-#: ../templates/main.php
+#: ../templates/main.php:64
 msgid "Next"
 msgstr "Следно"
 
-#: ../templates/part.main.php
-msgid "Nothing in here. Upload your music!"
-msgstr "Тука нема ништо. Ставете своја музика!"
-
-#: ../templates/fake-template.php
+#: ../templates/fake-template.php:9
 msgid "Path to your music collection"
-msgstr ""
+msgstr "Патека до вашата музичка колекција"
 
-#: ../templates/main.php
+#: ../templates/main.php:62
 msgid "Pause"
 msgstr "Пауза"
 
-#: ../templates/main.php ../templates/part.main.php
+#: ../templates/main.php:60
 msgid "Play"
 msgstr "Пушти"
 
-#: ../templates/main.php
+#: ../templates/main.php:58
 msgid "Previous"
 msgstr "Претходно"
 
-#: ../templates/main.php
+#: ../templates/main.php:89
 msgid "Repeat"
 msgstr "Повтори"
 
-#: ../templates/fake-template.php
+#: ../templates/fake-template.php:16
 msgid "Revoke API password"
-msgstr ""
+msgstr "Отповикај ја API лозинката"
 
-#: ../templates/part.main.php
-msgid "Scanning ..."
-msgstr ""
-
-#: ../templates/part.main.php
-msgid "Show all {{ trackcount }} songs ..."
-msgid_plural "Show all {{ trackcount }} songs ..."
-msgstr[0] "Прикажи ги сите {{ trackcount }} песни ..."
-msgstr[1] "Прикажи ги сите {{ trackcount }} песни ..."
-
-#: ../templates/part.main.php
-msgid "Show less ..."
-msgstr "Прикажи помалку ..."
-
-#: ../templates/main.php
+#: ../templates/main.php:87
 msgid "Shuffle"
 msgstr "Помешај"
 
-#: ../js/public/app.js
+#: ../js/public/app.js:458
 msgid "Some not playable tracks were skipped."
-msgstr ""
+msgstr "Некои песни кои не можеа да се пуштат беа прескокнати."
 
-#: ../templates/fake-template.php
+#: ../templates/fake-template.php:11
 msgid "This setting specifies the folder which will be scanned for music."
-msgstr ""
+msgstr "Овие поставки го одредуваат фолдерот кој ќе биде прегледан за музика."
 
-#: ../templates/fake-template.php
+#: ../templates/fake-template.php:8
 msgid "Tracks"
-msgstr ""
+msgstr "Песна"
 
-#: ../templates/fake-template.php
+#: ../templates/fake-template.php:4
 msgid "Unknown album"
-msgstr ""
+msgstr "Непознат албум"
 
-#: ../templates/fake-template.php
+#: ../templates/fake-template.php:5
 msgid "Unknown artist"
-msgstr ""
+msgstr "Непознат артист"
 
-#: ../templates/fake-template.php
+#: ../templates/fake-template.php:12
 msgid ""
 "Use this address to browse your music collection from any Ampache compatible"
 " player."
 msgstr ""
 
-#: ../templates/fake-template.php
+#: ../templates/fake-template.php:17
 msgid ""
 "Use your username and following password to connect to this Ampache "
 "instance:"

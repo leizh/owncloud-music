@@ -12,11 +12,13 @@
 
 namespace OCA\Music\Controller;
 
+use \OCP\AppFramework\Controller;
 use \OCP\IRequest;
 use \OCP\IURLGenerator;
 
 use \OCA\Music\Core\API;
 
+use \OCA\Music\AppFramework\Db\DoesNotExistException;
 use \OCA\Music\AppFramework\Http\Request;
 use \OCA\Music\AppFramework\Http\Http;
 use \OCA\Music\AppFramework\Http\Response;
@@ -28,7 +30,6 @@ use \OCA\Music\Db\AmpacheSession;
 use \OCA\Music\Db\AmpacheSessionMapper;
 use \OCA\Music\Db\AlbumMapper;
 use \OCA\Music\Db\ArtistMapper;
-use \OCA\Music\Db\DoesNotExistException;
 use \OCA\Music\Db\TrackMapper;
 
 
@@ -46,6 +47,8 @@ class AmpacheController extends Controller {
 	private $trackMapper;
 	private $ampacheUser;
 	private $urlGenerator;
+	private $rootFolder;
+	private $l10n;
 
 	private $sessionExpiryTime = 6000;
 
@@ -59,7 +62,7 @@ class AmpacheController extends Controller {
 								ArtistMapper $artistMapper,
 								TrackMapper $trackMapper,
 								AmpacheUser $ampacheUser,
-								$server){
+								$rootFolder){
 		parent::__construct($appname, $request);
 
 		$this->ampacheUserMapper = $ampacheUserMapper;
@@ -68,12 +71,13 @@ class AmpacheController extends Controller {
 		$this->artistMapper = $artistMapper;
 		$this->trackMapper = $trackMapper;
 		$this->urlGenerator = $urlGenerator;
+		$this->l10n = $l10n;
 
 		// used to share user info with middleware
 		$this->ampacheUser = $ampacheUser;
 
 		// used to deliver actual media file
-		$this->server = $server;
+		$this->rootFolder = $rootFolder;
 	}
 
 
@@ -108,8 +112,25 @@ class AmpacheController extends Controller {
 			# non Ampache API action - used for provide the file
 			case 'play':
 				return $this->play();
+			case '_get_cover':
+				return $this->get_cover();
 		}
 		throw new AmpacheException('TODO', 999);
+	}
+
+	/**
+	 * JustPlayer fix
+	 *
+	 * router crashes if same route is defined for POST and GET
+	 * so this just forwards to ampache()
+	 *
+	 * @NoAdminRequired
+	 * @PublicPage
+	 * @NoCSRFRequired
+	 * @AmpacheAPI
+	 */
+	public function ampache2() {
+		return $this->ampache();
 	}
 
 	protected function handshake() {
@@ -240,13 +261,13 @@ class AmpacheController extends Controller {
 
 		// set album and track count for artists
 		foreach($albums as &$album) {
-			$album->setTrackCount($this->trackMapper->countByArtist($album->getId(), $userId));
+			$album->setTrackCount($this->trackMapper->countByAlbum($album->getId(), $userId));
 			$album->setArtist($artist);
 		}
 
 		return $this->render(
 			'ampache/albums',
-			array('albums' => $albums, 'l10n' => $this->l10n),
+			array('albums' => $albums, 'l10n' => $this->l10n, 'urlGenerator' => $this->urlGenerator, 'authtoken' => $this->params('auth')),
 			'blank',
 			array('Content-Type' => 'text/xml')
 		);
@@ -307,7 +328,7 @@ class AmpacheController extends Controller {
 
 		// set album and track count for artists
 		$track->setArtist($this->artistMapper->find($track->getArtistId(), $userId));
-		$track->setAlbum($album);
+		$track->setAlbum($this->albumMapper->find($track->getAlbumId(), $userId));
 
 		return $this->render(
 			'ampache/songs',
@@ -390,7 +411,7 @@ class AmpacheController extends Controller {
 
 		// set track count for artists
 		foreach($albums as &$album) {
-			$album->setTrackCount($this->trackMapper->countByArtist($album->getId(), $userId));
+			$album->setTrackCount($this->trackMapper->countByAlbum($album->getId(), $userId));
 			$albumIds[] = $album->getId();
 		}
 
@@ -426,7 +447,7 @@ class AmpacheController extends Controller {
 
 		return $this->render(
 			'ampache/albums',
-			array('albums' => $albums, 'l10n' => $this->l10n),
+			array('albums' => $albums, 'l10n' => $this->l10n, 'urlGenerator' => $this->urlGenerator, 'authtoken' => $this->params('auth')),
 			'blank',
 			array('Content-Type' => 'text/xml')
 		);
@@ -444,7 +465,31 @@ class AmpacheController extends Controller {
 			return $r;
 		}
 
-		$files = $this->server->getRootFolder()->getById($track->getFileId());
+		$files = $this->rootFolder->getById($track->getFileId());
+
+		if(count($files) === 1) {
+			return new FileResponse($files[0]);
+		} else {
+			$r = new Response();
+			$r->setStatus(Http::STATUS_NOT_FOUND);
+			return $r;
+		}
+	}
+
+	/* this is not ampache proto */
+	protected function get_cover() {
+		$userId = $this->ampacheUser->getUserId();
+		$albumId = $this->params('filter');
+
+		try {
+			$album = $this->albumMapper->find($albumId, $userId);
+		} catch(DoesNotExistException $e) {
+			$r = new Response();
+			$r->setStatus(Http::STATUS_NOT_FOUND);
+			return $r;
+		}
+
+		$files = $this->rootFolder->getById($album->getCoverFileId());
 
 		if(count($files) === 1) {
 			return new FileResponse($files[0]);

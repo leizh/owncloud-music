@@ -1,17 +1,19 @@
 <?php
 $TRANSLATIONS = array(
-"Delete" => "Forigi",
+"Albums" => "Albumoj",
+"Artists" => "Artistoj",
 "Description" => "Priskribo",
-"Loading ..." => "Ŝargante...",
+"Description (e.g. App name)" => "Priskribo (ekz.: aplikaĵonomo)",
+"Invalid path" => "Nevalida vojo",
 "Music" => "Muziko",
 "Next" => "Jena",
-"Nothing in here. Upload your music!" => "Nenio estas ĉi tie. Alŝutu vian muzikon!",
+"Path to your music collection" => "Vojo al via muzikokolekto",
 "Pause" => "Paŭzi...",
 "Play" => "Ludi",
 "Previous" => "Maljena",
 "Repeat" => "Ripeti",
-"_Show all {{ trackcount }} songs ..._::_Show all {{ trackcount }} songs ..._" => array("Montri ĉiujn {{ trackcount }} kantaĵojn...","Montri ĉiujn {{ trackcount }} kantaĵojn..."),
-"Show less ..." => "Montri malpli...",
-"Shuffle" => "Miksi"
+"Shuffle" => "Miksi",
+"Unknown album" => "Nekonata albumo",
+"Unknown artist" => "Nekonata artisto"
 );
 $PLURAL_FORMS = "nplurals=2; plural=(n != 1);";

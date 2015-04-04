@@ -1,3 +1,92 @@
+
+ * fix twice opened file chooser in personal settings (#344)
+
+v0.3.5 2015-02-16
+
+  * reset-database command
+  * set length of a track in the database and expose via Ampache
+  * fix album count in Ampache API
+  * expose Album cover via (inofficial) Ampache API
+  * ownCloud 8 compatibility
+  * user interaction needed to start background scan and reload the music view
+
+v0.3.4 2014-09-04
+
+  Thanks to Volkan Geezer (@wakeup) and Yu-De (@pellaeon)
+
+  * switch to aurora.js for JavaScript decoding of music files (ability to
+    support more codecs) - currently just mp3 and flac - thanks to @pellaeon
+
+  * make batch rescan incremental
+  * make userFolder optional - get rid of wrong type of parameter error logs
+  * add check for natural numbers above 0 for track number
+  * add --debug switch to music:scan command to list memory usage of each step
+  * fix for not working apps/music/#/file/ID routes
+  * fix broken expand track list for albums
+  * use WebDAV for file access as it provides a better stability and functionality
+
+  # Internal
+  * drop unsupported calls to ownCloud private APIs
+  * use dependency injection for scan command
+
+  ## Known issues
+
+  * mp3 seeking isn't working
+
+v0.3.3 2014-08-12
+
+  Thanks to Dan Mac (@danmac-uk)
+
+  * Fix undefined index COUNT(*)
+    * add a name to the COUNT(*) statement
+    * should work with MySQL, PostgreSQL, MSSQL, Oracle, SQLite
+  * Fix Ampache URL confusion
+    * remove of '/server/xml.server.php'
+    * add note
+
+v0.3.2 2014-08-12
+
+  * RESTful playlist API (thanks @wakeup - Volkan Gezer)
+  * Updated libraries (AngularJS 1.2.21, angular-gettext 1.0.0, drop jQuery)
+  * refactor cleanup method (reduce injected dependencies)
+    * move clean up task to separate helper class
+  * drop stable5 fixes as they are unused
+  * verified support for ownCloud 6
+  * prepare use of sidebar and mobile responsive sidebar
+  * migrate to ownCloud 7 core CSS
+  * add ID to ampache session - fixes issues with the DB mapper (#213)
+  * make user folder injectable into rescan method
+
+v0.3.0 2014-08-06
+
+  # General
+
+  * disable share hook, because it delayed the sharing action a lot
+  * add index for cover_file_id in albums
+  * playstate is now represented in the URL
+  * change scan count from 50 to 20 - should fix #172, fix #212
+  * remove album cover search on remove of album cover (should speedup deletions)
+
+  # ownCloud 7 related
+
+  * adjusted design to ownCloud 7 (loading spinner, no shadow on icon)
+  * fixes to get it work with ownCloud 7 (especially public shares and Ampache API)
+  * fixes several typos and minor issues
+
+  # Internal
+
+  * migration from separate AppFramework to core provided AppFramework
+  * JavaScript 3rdparty library management is now handled by bower
+  * getID3 is update to v1.9.8, which fixes a memory leak - see #212
+  * change handling of routes in a proper way as preparation for playlist functionality - GSoC project by @wakeup
+  * improved documentation of PHP classes
+  * licence header cleanup (shrinked)
+  * respect the user ID on update (scanner)
+
+  ## Known issues
+
+  * listen to shared files doesn't work - this is a issue of the ownCloud core and will hopefully be fixed in 7.0.2 and 6.0.5 - owncloud/core#10173
+
 v0.2 2014-04-30
 
   * handle shared files properly (also fixes mounted storage)

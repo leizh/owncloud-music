@@ -17,20 +17,18 @@ use \OCP\IURLGenerator;
 use \OCA\Music\AppFramework\Db\Entity;
 
 /**
- * @method int getId()
- * @method setId(int $id)
  * @method string getTitle()
  * @method setTitle(string $title)
  * @method int getNumber()
  * @method setNumber(int $number)
  * @method int getArtistId()
  * @method setArtistId(int $artistId)
- * @method string getArtist()
- * @method setArtist(string $artist)
+ * @method Artist getArtist()
+ * @method setArtist(Artist $artist)
  * @method int getAlbumId()
  * @method setAlbumId(int $albumId)
- * @method string getAlbum()
- * @method setAlbum(string $album)
+ * @method Album getAlbum()
+ * @method setAlbum(Album $album)
  * @method int getLength()
  * @method setLength(int $length)
  * @method int getFileId()
@@ -93,16 +91,24 @@ class Track extends Entity {
 		);
 	}
 
-	public function toCollection(IURLGenerator $urlGenerator) {
+	public function toCollection(IURLGenerator $urlGenerator, $userFolder) {
+		$nodes = $userFolder->getById($this->getFileId());
+		if(count($nodes) == 0 ) {
+			throw new \OCP\Files\NotFoundException();
+		}
+
+		// get the first valid node
+		$node = $nodes[0];
+		$path = $node->getPath();
+
+		$relativePath = $userFolder->getRelativePath($path);
+
 		return array(
 			'title' => $this->getTitle(),
 			'number' => $this->getNumber(),
 			'artistId' => $this->getArtistId(),
 			'albumId' => $this->getAlbumId(),
-			'files' => array($this->getMimetype() => $urlGenerator->linkToRoute(
-				'music.api.download',
-				array('fileId' => $this->getFileId())
-			)),
+			'files' => array($this->getMimetype() => $urlGenerator->getAbsoluteUrl('remote.php/webdav' . $relativePath)),
 			'id' => $this->getId(),
 		);
 	}

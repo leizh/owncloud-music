@@ -3,7 +3,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: ownCloud\n"
-"PO-Revision-Date: 2014-05-11 05:03+0000\n"
+"PO-Revision-Date: 2014-10-21 05:21+0000\n"
 "Last-Translator: I Robot\n"
 "Language-Team: German (Switzerland) (http://www.transifex.com/projects/p/owncloud/language/de_CH/)\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -18,10 +18,6 @@ msgstr ""
 #: ../templates/fake-template.php
 msgid "Artists"
 msgstr ""
-
-#: ../templates/main.php
-msgid "Delete"
-msgstr "Löschen"
 
 #: ../templates/fake-template.php
 msgid "Description"
@@ -54,10 +50,6 @@ msgid ""
 " like to have a list of clients to test with. Thanks"
 msgstr ""
 
-#: ../templates/main.php ../templates/part.main.php
-msgid "Loading ..."
-msgstr ""
-
 #: ../templates/fake-template.php
 msgid "Music"
 msgstr "Musik"
@@ -65,10 +57,6 @@ msgstr "Musik"
 #: ../templates/main.php
 msgid "Next"
 msgstr "Weiter"
-
-#: ../templates/part.main.php
-msgid "Nothing in here. Upload your music!"
-msgstr ""
 
 #: ../templates/fake-template.php
 msgid "Path to your music collection"
@@ -78,7 +66,7 @@ msgstr ""
 msgid "Pause"
 msgstr "Anhalten"
 
-#: ../templates/main.php ../templates/part.main.php
+#: ../templates/main.php
 msgid "Play"
 msgstr "Abspielen"
 
@@ -92,20 +80,6 @@ msgstr "Wiederholen"
 
 #: ../templates/fake-template.php
 msgid "Revoke API password"
-msgstr ""
-
-#: ../templates/part.main.php
-msgid "Scanning ..."
-msgstr ""
-
-#: ../templates/part.main.php
-msgid "Show all {{ trackcount }} songs ..."
-msgid_plural "Show all {{ trackcount }} songs ..."
-msgstr[0] ""
-msgstr[1] ""
-
-#: ../templates/part.main.php
-msgid "Show less ..."
 msgstr ""
 
 #: ../templates/main.php

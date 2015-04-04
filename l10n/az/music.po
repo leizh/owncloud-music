@@ -1,145 +1,120 @@
 # 
 # Translators:
+# unixidzero <unixidzero@gmail.com>, 2014-2015
 msgid ""
 msgstr ""
 "Project-Id-Version: ownCloud\n"
-"PO-Revision-Date: 2014-04-30 05:30+0000\n"
-"Last-Translator: I Robot\n"
+"PO-Revision-Date: 2015-02-25 09:18+0000\n"
+"Last-Translator: unixidzero <unixidzero@gmail.com>\n"
 "Language-Team: Azerbaijani (http://www.transifex.com/projects/p/owncloud/language/az/)\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: az\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: ../templates/fake-template.php
+#: ../templates/fake-template.php:7
 msgid "Albums"
-msgstr ""
+msgstr "Albomlar"
 
-#: ../templates/fake-template.php
+#: ../templates/fake-template.php:6
 msgid "Artists"
-msgstr ""
+msgstr "Müğənnilər"
 
-#: ../templates/main.php
-msgid "Delete"
-msgstr ""
-
-#: ../templates/fake-template.php
+#: ../templates/fake-template.php:13
 msgid "Description"
-msgstr ""
+msgstr "Açıqlanma"
 
-#: ../templates/fake-template.php
+#: ../templates/fake-template.php:14
 msgid "Description (e.g. App name)"
-msgstr ""
+msgstr "Açıqlanma(Misal üçün proqram adı)"
 
-#: ../templates/fake-template.php
+#: ../templates/fake-template.php:15
 msgid "Generate API password"
-msgstr ""
+msgstr "APİ şifrəsinin generasiyası"
 
-#: ../templates/fake-template.php
+#: ../templates/fake-template.php:18
 msgid ""
 "Here you can generate passwords to use with the Ampache API, because they "
 "can't be stored in a really secure way due to the design of the Ampache API."
 " You can generate as many passwords as you want and revoke them anytime."
-msgstr ""
+msgstr "Ampache APİ-nin istifadə edilməsi üçün burda siz şifrələr generasiya edə bilərsiniz ona görə ki, onlar yalnz təhlükəsiz saxlana bilər. Bu Ampache API-nin öz dizaynıdır. Siz istənilən zaman çoxlu şifrə yarada və onları silə bilərsiniz."
 
-#: ../templates/fake-template.php
+#: ../templates/fake-template.php:10
 msgid "Invalid path"
-msgstr ""
+msgstr "Yalnış ünvan"
 
-#: ../templates/fake-template.php
+#: ../templates/fake-template.php:19
 msgid ""
 "Keep in mind, that the Ampache API is just a preview and is unstable. Feel "
 "free to report your experience with this feature in the corresponding <a "
 "href=\"https://github.com/owncloud/music/issues/60\">issue</a>. I would also"
 " like to have a list of clients to test with. Thanks"
-msgstr ""
+msgstr "Yadda saxlayın, Ampache API yalnız göstərmək üçündür və stabil deyil. Bu imkanla olan öz praktikanızı <a href=\"https://github.com/owncloud/music/issues/60\">səbəb</a> uyğun unvanla bölüşməkdən çəkinməyin. Həmçinin bunun test edilməsi üçün müştərilər siyahısını istərdim.\nTəşəkkürlər "
 
-#: ../templates/main.php ../templates/part.main.php
-msgid "Loading ..."
-msgstr ""
-
-#: ../templates/fake-template.php
+#: ../templates/fake-template.php:3
 msgid "Music"
-msgstr ""
+msgstr "Musiqi"
 
-#: ../templates/main.php
+#: ../templates/main.php:64
 msgid "Next"
-msgstr ""
+msgstr "Növbəti"
 
-#: ../templates/part.main.php
-msgid "Nothing in here. Upload your music!"
-msgstr ""
-
-#: ../templates/fake-template.php
+#: ../templates/fake-template.php:9
 msgid "Path to your music collection"
-msgstr ""
+msgstr "Sizin musiqi yığmasının ünvanı"
 
-#: ../templates/main.php
+#: ../templates/main.php:62
 msgid "Pause"
-msgstr ""
+msgstr "Ara ver"
 
-#: ../templates/main.php ../templates/part.main.php
+#: ../templates/main.php:60
 msgid "Play"
-msgstr ""
+msgstr "Oxu"
 
-#: ../templates/main.php
+#: ../templates/main.php:58
 msgid "Previous"
-msgstr ""
+msgstr "Əvvələ"
 
-#: ../templates/main.php
+#: ../templates/main.php:89
 msgid "Repeat"
-msgstr ""
+msgstr "Təkrar"
 
-#: ../templates/fake-template.php
+#: ../templates/fake-template.php:16
 msgid "Revoke API password"
-msgstr ""
+msgstr "API şifrəsini sil"
 
-#: ../templates/part.main.php
-msgid "Scanning ..."
-msgstr ""
-
-#: ../templates/part.main.php
-msgid "Show all {{ trackcount }} songs ..."
-msgid_plural "Show all {{ trackcount }} songs ..."
-msgstr[0] ""
-msgstr[1] ""
-
-#: ../templates/part.main.php
-msgid "Show less ..."
-msgstr ""
-
-#: ../templates/main.php
+#: ../templates/main.php:87
 msgid "Shuffle"
-msgstr ""
+msgstr "Qarışdırmaq"
 
-#: ../js/public/app.js
+#: ../js/public/app.js:458
 msgid "Some not playable tracks were skipped."
-msgstr ""
+msgstr "Bəzi oxunulabilməyən musiqilər ötürülüb."
 
-#: ../templates/fake-template.php
+#: ../templates/fake-template.php:11
 msgid "This setting specifies the folder which will be scanned for music."
-msgstr ""
+msgstr "Bu quraşdırma qovluğu təyin edir hansı ki, musiqi üçün tədqiq ediləcək."
 
-#: ../templates/fake-template.php
+#: ../templates/fake-template.php:8
 msgid "Tracks"
-msgstr ""
+msgstr "Musiqi"
 
-#: ../templates/fake-template.php
+#: ../templates/fake-template.php:4
 msgid "Unknown album"
-msgstr ""
+msgstr "Bəlli olmayan albom"
 
-#: ../templates/fake-template.php
+#: ../templates/fake-template.php:5
 msgid "Unknown artist"
-msgstr ""
+msgstr "Bəlli olmayan artist"
 
-#: ../templates/fake-template.php
+#: ../templates/fake-template.php:12
 msgid ""
 "Use this address to browse your music collection from any Ampache compatible"
 " player."
-msgstr ""
+msgstr "İstənilən Ampache uyğunluğu olan oxuyucudan sizin musiqi kolleksiyanızı göstərmək üçün, bu ünvandan istifadə edin."
 
-#: ../templates/fake-template.php
+#: ../templates/fake-template.php:17
 msgid ""
 "Use your username and following password to connect to this Ampache "
 "instance:"
-msgstr ""
+msgstr "Bu Ampache nusxəsinə qoşulmaq üçün öz istifadəçi adı və şifrənizi istifadə edin."

@@ -55,6 +55,9 @@ class ArtistMapperTest extends \OCA\Music\AppFramework\Utility\MapperTestUtility
 	}
 
 
+	/**
+	 * @param string $condition
+	 */
 	private function makeSelectQuery($condition=null){
 		return 'SELECT `artist`.`name`, `artist`.`image`, `artist`.`id` '.
 			'FROM `*PREFIX*music_artists` `artist` '.
@@ -118,8 +121,8 @@ class ArtistMapperTest extends \OCA\Music\AppFramework\Utility\MapperTestUtility
 	}
 
 	public function testCount(){
-		$sql = 'SELECT COUNT(*) FROM `*PREFIX*music_artists` WHERE `user_id` = ?';
-		$this->setMapperResult($sql, array($this->userId), array(array('COUNT(*)' => 4)));
+		$sql = 'SELECT COUNT(*) AS count FROM `*PREFIX*music_artists` WHERE `user_id` = ?';
+		$this->setMapperResult($sql, array($this->userId), array(array('count' => 4)));
 		$result = $this->mapper->count($this->userId);
 		$this->assertEquals(4, $result);
 	}

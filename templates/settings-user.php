@@ -22,9 +22,9 @@
 <div class="section" id="music-user">
 	<h2><?php p($l->t('Music')); ?></h2>
 	<div>
-		<label for="music-path"><?php p($l->t('Path to your music collection')); ?></label>
+		<label for="music-path"><?php p($l->t('Path to your music collection')); ?>:</label>
 		<input type="text" id="music-path" value="<?php p($_['path']); ?>" />
-		<p><em><?php p($l->t('This setting specifies the folder which will be scanned for music.')); ?>.</em></p>
+		<p><em><?php p($l->t('This setting specifies the folder which will be scanned for music.')); ?></em></p>
 	</div>
 	<h3>Ampache</h3>
 	<div class="warning">
@@ -33,8 +33,9 @@
 		'I would also like to have a list of clients to test with. Thanks')); ?>
 	</div>
 	<div>
-		<code><?php p(\OC_Helper::makeURLAbsolute(\OC_Helper::linkToRoute('music.ampache.ampache')));?></code><br />
-		<em><?php p($l->t('Use this address to browse your music collection from any Ampache compatible player.')); ?></em>
+		<code><?php p(str_replace('/server/xml.server.php', '', $_['URLGenerator']->getAbsoluteURL($_['URLGenerator']->linkToRoute('music.ampache.ampache'))));?></code><br />
+		<em><?php p($l->t('Use this address to browse your music collection from any Ampache compatible player.')); ?>
+			<?php p($l->t("If this URL doesn't work try to append '/server/xml.server.php'." )); ?></em>
 	</div>
 	<div>
 		<?php p($l->t("Here you can generate passwords to use with the Ampache API, because they " .

@@ -23,6 +23,10 @@ class AlbumMapper extends Mapper implements IMapper {
 		parent::__construct($db, 'music_albums', '\OCA\Music\Db\Album');
 	}
 
+	/**
+	 * @param string $condition
+	 * @return string
+	 */
 	private function makeSelectQuery($condition=null){
 		return 'SELECT `album`.`name`, `album`.`year`, `album`.`id`, '.
 			'`album`.`cover_file_id` '.
@@ -30,18 +34,38 @@ class AlbumMapper extends Mapper implements IMapper {
 			'WHERE `album`.`user_id` = ? ' . $condition;
 	}
 
+	/**
+	 * returns all albums of a user
+	 *
+	 * @param string $userId the user ID
+	 * @return Album[]
+	 */
 	public function findAll($userId){
 		$sql = $this->makeSelectQuery();
 		$params = array($userId);
 		return $this->findEntities($sql, $params);
 	}
 
+	/**
+	 * finds an album by ID
+	 *
+	 * @param integer $albumId ID of the album
+	 * @param string $userId the user ID
+	 * @return Album
+	 */
 	public function find($albumId, $userId){
 		$sql = $this->makeSelectQuery('AND `album`.`id` = ?');
 		$params = array($userId, $albumId);
 		return $this->findEntity($sql, $params);
 	}
 
+	/**
+	 * returns artist IDs mapped to album IDs
+	 *
+	 * @param integer[] $albumIds IDs of the albums
+	 * @return array the artist IDs of an album are accessible
+	 * 				by the album ID inside of this array
+	 */
 	public function getAlbumArtistsByAlbumId($albumIds){
 		$questionMarks = array();
 		for($i = 0; $i < count($albumIds); $i++){
@@ -61,6 +85,13 @@ class AlbumMapper extends Mapper implements IMapper {
 		return $artists;
 	}
 
+	/**
+	 * returns albums of a specified artist
+	 *
+	 * @param integer $artistId ID of the artist
+	 * @param strig $userId the user ID
+	 * @return Album[]
+	 */
 	public function findAllByArtist($artistId, $userId){
 		$sql = 'SELECT `album`.`name`, `album`.`year`, `album`.`id`, '.
 			'`album`.`cover_file_id` '.
@@ -72,6 +103,14 @@ class AlbumMapper extends Mapper implements IMapper {
 		return $this->findEntities($sql, $params);
 	}
 
+	/**
+	 * returns album that matches a name and year
+	 *
+	 * @param string $albumName name of the album
+	 * @param string|integer $albumYear year of the album release
+	 * @param strig $userId the user ID
+	 * @return Album
+	 */
 	public function findByNameAndYear($albumName, $albumYear, $userId){
 		if($albumName === null && $albumYear === null) {
 			$params = array($userId);
@@ -89,6 +128,15 @@ class AlbumMapper extends Mapper implements IMapper {
 		return $this->findEntity($sql, $params);
 	}
 
+	/**
+	 * returns album that matches a name, a year and a artist ID
+	 *
+	 * @param string|null $albumName name of the album
+	 * @param string|integer|null $albumYear year of the album release
+	 * @param integer|null $artistId ID of the artist
+	 * @param string $userId the user ID
+	 * @return Album[]
+	 */
 	public function findAlbum($albumName, $albumYear, $artistId, $userId) {
 		$sql = 'SELECT `album`.`name`, `album`.`year`, `album`.`id`, '.
 			'`album`.`cover_file_id` '.
@@ -124,6 +172,10 @@ class AlbumMapper extends Mapper implements IMapper {
 		return $this->findEntity($sql, $params);
 	}
 
+	/**
+	 * @param integer $albumId
+	 * @param integer $artistId
+	 */
 	public function addAlbumArtistRelationIfNotExist($albumId, $artistId){
 		$sql = 'SELECT 1 FROM `*PREFIX*music_album_artists` `relation` '.
 			'WHERE `relation`.`album_id` = ? AND `relation`.`artist_id` = ?';
@@ -139,6 +191,9 @@ class AlbumMapper extends Mapper implements IMapper {
 		}
 	}
 
+	/**
+	 * @param integer[] $albumIds
+	 */
 	public function deleteById($albumIds){
 		if(count($albumIds) === 0)
 			return;
@@ -152,6 +207,10 @@ class AlbumMapper extends Mapper implements IMapper {
 		$this->execute($sql, $albumIds);
 	}
 
+	/**
+	 * @param integer $coverFileId
+	 * @param integer $parentFolderId
+	 */
 	public function updateCover($coverFileId, $parentFolderId){
 		$sql = 'UPDATE `*PREFIX*music_albums`
 				SET `cover_file_id` = ?
@@ -165,6 +224,9 @@ class AlbumMapper extends Mapper implements IMapper {
 		$this->execute($sql, $params);
 	}
 
+	/**
+	 * @param integer $coverFileId
+	 */
 	public function removeCover($coverFileId){
 		$sql = 'UPDATE `*PREFIX*music_albums`
 				SET `cover_file_id` = NULL
@@ -173,6 +235,9 @@ class AlbumMapper extends Mapper implements IMapper {
 		$this->execute($sql, $params);
 	}
 
+	/**
+	 * @return array
+	 */
 	public function getAlbumsWithoutCover(){
 		$sql = 'SELECT DISTINCT `albums`.`id`, `files`.`parent`
 				FROM `*PREFIX*music_albums` `albums`
@@ -187,6 +252,10 @@ class AlbumMapper extends Mapper implements IMapper {
 		return $return;
 	}
 
+	/**
+	 * @param integer $albumId
+	 * @param integer $parentFolderId
+	 */
 	public function findAlbumCover($albumId, $parentFolderId){
 		$coverNames = array('cover', 'albumart', 'front', 'folder');
 		$imagesSql = 'SELECT `fileid`, `name`
@@ -224,17 +293,26 @@ class AlbumMapper extends Mapper implements IMapper {
 		$this->execute($sql, $params);
 	}
 
+	/**
+	 * @param string $userId
+	 * @return integer
+	 */
 	public function count($userId){
-		$sql = 'SELECT COUNT(*) FROM `*PREFIX*music_albums` '.
+		$sql = 'SELECT COUNT(*) AS count FROM `*PREFIX*music_albums` '.
 			'WHERE `user_id` = ?';
 		$params = array($userId);
 		$result = $this->execute($sql, $params);
 		$row = $result->fetchRow();
-		return $row['COUNT(*)'];
+		return $row['count'];
 	}
 
+	/**
+	 * @param integer $artistId
+	 * @param string $userId
+	 * @return integer
+	 */
 	public function countByArtist($artistId, $userId){
-		$sql = 'SELECT COUNT(*) '.
+		$sql = 'SELECT COUNT(*) AS count '.
 			'FROM `*PREFIX*music_albums` `album` '.
 			'JOIN `*PREFIX*music_album_artists` `artists` '.
 			'ON `album`.`id` = `artists`.`album_id` '.
@@ -242,9 +320,15 @@ class AlbumMapper extends Mapper implements IMapper {
 		$params = array($userId, $artistId);
 		$result = $this->execute($sql, $params);
 		$row = $result->fetchRow();
-		return $row['COUNT(*)'];
+		return $row['count'];
 	}
 
+	/**
+	 * @param string $name
+	 * @param string $userId
+	 * @param bool $fuzzy
+	 * @return Album[]
+	 */
 	public function findAllByName($name, $userId, $fuzzy = false){
 		if ($fuzzy) {
 			$condition = 'AND LOWER(`album`.`name`) LIKE LOWER(?) ';

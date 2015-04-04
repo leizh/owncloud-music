@@ -1,17 +1,23 @@
 <?php
 $TRANSLATIONS = array(
-"Delete" => "刪除",
+"Albums" => "專輯",
+"Artists" => "歌手",
 "Description" => "描述",
-"Loading ..." => "載入中…",
+"Description (e.g. App name)" => "描述 (例: App 名稱)",
+"Generate API password" => "產生 API 密碼",
+"Invalid path" => "無效的路徑",
 "Music" => "音樂",
 "Next" => "下一個",
-"Nothing in here. Upload your music!" => "這裡沒有東西，上傳你的音樂！",
+"Path to your music collection" => "您的音樂資料夾的路徑",
 "Pause" => "暫停",
 "Play" => "播放",
 "Previous" => "上一個",
 "Repeat" => "重覆",
-"_Show all {{ trackcount }} songs ..._::_Show all {{ trackcount }} songs ..._" => array("顯示全部 {{ trackcount }} 首歌曲"),
-"Show less ..." => "顯示更少",
-"Shuffle" => "隨機播放"
+"Revoke API password" => "撤銷 API 密碼",
+"Shuffle" => "隨機播放",
+"Some not playable tracks were skipped." => "部份無法播放的曲目已跳過。",
+"Tracks" => "曲目",
+"Unknown album" => "未知的專輯",
+"Unknown artist" => "未知的歌手"
 );
 $PLURAL_FORMS = "nplurals=1; plural=0;";

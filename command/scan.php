@@ -26,16 +26,19 @@ use \OCA\Music\App\Music;
 
 class Scan extends Command {
 	/**
-	 * @var \OC\User\Manager $userManager
+	 * @var \OCP\IUserManager $userManager
 	 */
 	private $userManager;
 	private $scanner;
+	/**
+	 * @var \OCP\Files\Folder $rootFolder
+	 */
+	private $rootFolder;
 
-	public function __construct(\OC\User\Manager $userManager) {
+	public function __construct(\OCP\IUserManager $userManager, $scanner, \OCP\Files\Folder $rootFolder) {
 		$this->userManager = $userManager;
-
-		$app = new Music();
-		$this->scanner = $app->getContainer()->query('Scanner');
+		$this->scanner = $scanner;
+		$this->rootFolder = $rootFolder;
 		parent::__construct();
 	}
 
@@ -54,15 +57,21 @@ class Scan extends Command {
 					InputOption::VALUE_NONE,
 					'will rescan all music files of all known users'
 			)
+			->addOption(
+					'debug',
+					null,
+					InputOption::VALUE_NONE,
+					'will run the scan in debug mode (memory usage)'
+			)
 		;
 	}
 
 	protected function execute(InputInterface $input, OutputInterface $output) {
-		$scanner = $this->container['Scanner'];
-
-		$this->scanner->listen('\OCA\Music\Utility\Scanner', 'update', function($path) use ($output) {
-			$output->writeln("Scanning <info>$path</info>");
-		});
+		if (!$input->getOption('debug')) {
+			$this->scanner->listen('\OCA\Music\Utility\Scanner', 'update', function($path) use ($output) {
+				$output->writeln("Scanning <info>$path</info>");
+			});
+		}
 
 		if ($input->getOption('all')) {
 			$users = $this->userManager->search('');
@@ -77,7 +86,30 @@ class Scan extends Command {
 			\OC_Util::tearDownFS();
 			\OC_Util::setupFS($user);
 			$output->writeln("Start scan for <info>$user</info>");
-			$this->scanner->rescan($user, true);
+			$this->scanner->rescan($user, true, $this->resolveUserFolder($user), $input->getOption('debug'), $output);
 		}
+	}
+
+	private function resolveUserFolder($userId) {
+		$dir = '/' . $userId;
+		$root = $this->rootFolder;
+
+		// copy of getUserServer of server container
+		$folder = null;
+
+		if (!$root->nodeExists($dir)) {
+			$folder = $root->newFolder($dir);
+		} else {
+			$folder = $root->get($dir);
+		}
+
+		$dir = '/files';
+		if (!$folder->nodeExists($dir)) {
+			$folder = $folder->newFolder($dir);
+		} else {
+			$folder = $folder->get($dir);
+		}
+
+		return $folder;
 	}
 }

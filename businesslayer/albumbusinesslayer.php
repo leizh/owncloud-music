@@ -35,7 +35,7 @@ class AlbumBusinessLayer extends BusinessLayer {
 	 * Return an album
 	 * @param string $albumId the id of the album
 	 * @param string $userId the name of the user
-	 * @return album
+	 * @return Album album
 	 */
 	public function find($albumId, $userId){
 		$album = $this->mapper->find($albumId, $userId);
@@ -47,7 +47,7 @@ class AlbumBusinessLayer extends BusinessLayer {
 	/**
 	 * Returns all albums
 	 * @param string $userId the name of the user
-	 * @return array of albums
+	 * @return Album[] albums
 	 */
 	public function findAll($userId){
 		$albums = $this->mapper->findAll($userId);
@@ -57,7 +57,7 @@ class AlbumBusinessLayer extends BusinessLayer {
 	/**
 	 * Returns all albums filtered by artist
 	 * @param string $artistId the id of the artist
-	 * @return array of albums
+	 * @return Album[] albums
 	 */
 	public function findAllByArtist($artistId, $userId){
 		$albums = $this->mapper->findAllByArtist($artistId, $userId);
@@ -83,8 +83,10 @@ class AlbumBusinessLayer extends BusinessLayer {
 	 * Adds an album (if it does not exist already) and returns the new album
 	 * @param string $name the name of the album
 	 * @param string $year the year of the release
-	 * @return \OCA\Music\Db\Album
-	 * @throws \OCA\Music\AppFramework\BusinessLayer\BusinessLayerException
+	 * @param integer $artistId
+	 * @param string $userId
+	 * @return Album
+	 * @throws BusinessLayerException
 	 */
 	public function addAlbumIfNotExist($name, $year, $artistId, $userId){
 		try {
@@ -122,13 +124,11 @@ class AlbumBusinessLayer extends BusinessLayer {
 	}
 
 	/**
-	 * removes the cover from albums
+	 * removes the cover from albums and search for new ones
 	 * @param integer $coverFileId the file id of the cover image
 	 */
 	public function removeCover($coverFileId){
 		$this->mapper->removeCover($coverFileId);
-		// find new cover
-		$this->findCovers();
 	}
 
 	/**

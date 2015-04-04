@@ -48,7 +48,7 @@ class Scanner extends PublicEmitter {
 								$userId,
 								IConfig $configManager,
 								$appName,
-								Folder $userFolder){
+								Folder $userFolder = null){
 		$this->extractor = $extractor;
 		$this->artistBusinessLayer = $artistBusinessLayer;
 		$this->albumBusinessLayer = $albumBusinessLayer;
@@ -69,8 +69,11 @@ class Scanner extends PublicEmitter {
 
 	public function updateById($fileId, $userId = null) {
 		try {
-			$file = $this->userFolder->get($path);
-			$this->update($file, $userId);
+			$files = $this->userFolder->getById($fileId);
+			if(count($files) > 0) {
+				// use first result
+				$this->update($files[0], $userId);
+			}
 		} catch (\OCP\Files\NotFoundException $e) {
 			// just ignore the error
 			$this->logger->log('updateById - file not found - '. $fileId , 'debug');
@@ -79,11 +82,8 @@ class Scanner extends PublicEmitter {
 
 	public function updateByPath($filePath, $userId = null) {
 		try {
-			$files = $this->userFolder->getById($filePath);
-			if(count($files) > 0) {
-				// use first result
-				$this->update($files[0], $userId);
-			}
+			$file = $this->userFolder->get($filePath);
+			$this->update($file, $userId);
 		} catch (\OCP\Files\NotFoundException $e) {
 			// just ignore the error
 			$this->logger->log('updateByPath - file not found - '. $filePath , 'debug');
@@ -94,7 +94,7 @@ class Scanner extends PublicEmitter {
 	 * Get called by 'post_write' hook (file creation, file update)
 	 * @param \OCP\Files\Node $file the file
 	 */
-	public function update($file){
+	public function update($file, $userId){
 		// debug logging
 		$this->logger->log('update - '. $file->getPath() , 'debug');
 
@@ -120,12 +120,15 @@ class Scanner extends PublicEmitter {
 		}
 
 		if(ini_get('allow_url_fopen')) {
+			// TODO find a way to get this for a sharee
+			$isSharee = $userId && $this->userId !== $userId;
+
 			$musicPath = $this->configManager->getUserValue($this->userId, $this->appName, 'path');
 			if($musicPath !== null || $musicPath !== '/' || $musicPath !== '') {
 				// TODO verify
 				$musicPath = $this->userFolder->get($musicPath)->getPath();
-				// skip files that aren't inside the user specified path
-				if(substr($file->getPath(), 0, strlen($musicPath)) !== $musicPath) {
+				// skip files that aren't inside the user specified path (and also for sharees - TODO remove this)
+				if(!$isSharee && substr($file->getPath(), 0, strlen($musicPath)) !== $musicPath) {
 					$this->logger->log('skipped - outside of specified path' , 'debug');
 					return;
 				}
@@ -205,6 +208,13 @@ class Scanner extends PublicEmitter {
 			$tmp = explode('/', $trackNumber);
 			$trackNumber = $tmp[0];
 
+			// check for numeric values - cast them to int and verify it's a natural number above 0
+			if(is_numeric($trackNumber) && ((int)$trackNumber) > 0) {
+				$trackNumber = (int)$trackNumber;
+			} else {
+				$trackNumber = null;
+			}
+
 			$year = null;
 			if($hasComments && array_key_exists('year', $fileInfo['comments'])){
 				$year = $fileInfo['comments']['year'][0];
@@ -214,23 +224,37 @@ class Scanner extends PublicEmitter {
 
 			}
 			$fileId = $file->getId();
+			
+			$length = null;
+			if (array_key_exists('playtime_seconds', $fileInfo)) {
+				$length = ceil($fileInfo['playtime_seconds']);
+			}
+			
+			$bitrate = null;
+			if (array_key_exists('audio', $fileInfo) && array_key_exists('bitrate', $fileInfo['audio'])) {
+				$bitrate = $fileInfo['audio']['bitrate'];
+			}
 
 			// debug logging
 			$this->logger->log('extracted metadata - ' .
-				sprintf('artist: %s, album: %s, title: %s, track#: %s, year: %s, mimetype: %s, fileId: %i',
-					$artist, $album, $title, $trackNumber, $year, $mimetype, $fileId), 'debug');
+				sprintf('artist: %s, album: %s, title: %s, track#: %s, year: %s, mimetype: %s, length: %s, bitrate: %s, fileId: %i, this->userId: %s, userId: %s',
+					$artist, $album, $title, $trackNumber, $year, $mimetype, $length, $bitrate, $fileId, $this->userId, $userId), 'debug');
+
+			if(!$userId) {
+				$userId = $this->userId;
+			}
 
 			// add artist and get artist entity
-			$artist = $this->artistBusinessLayer->addArtistIfNotExist($artist, $this->userId);
+			$artist = $this->artistBusinessLayer->addArtistIfNotExist($artist, $userId);
 			$artistId = $artist->getId();
 
 			// add album and get album entity
-			$album = $this->albumBusinessLayer->addAlbumIfNotExist($album, $year, $artistId, $this->userId);
+			$album = $this->albumBusinessLayer->addAlbumIfNotExist($album, $year, $artistId, $userId);
 			$albumId = $album->getId();
 
 			// add track and get track entity
 			$track = $this->trackBusinessLayer->addTrackIfNotExist($title, $trackNumber, $artistId,
-				$albumId, $fileId, $mimetype, $this->userId);
+				$albumId, $fileId, $mimetype, $userId, $length, $bitrate);
 
 			// debug logging
 			$this->logger->log('imported entities - ' .
@@ -319,8 +343,14 @@ class Scanner extends PublicEmitter {
 	/**
 	 * Rescan the whole file base for new files
 	 */
-	public function rescan($userId = null, $batch = false) {
+	public function rescan($userId = null, $batch = false, $userHome = null, $debug = false, $output = null) {
 		$this->logger->log('Rescan triggered', 'info');
+
+		if($userHome !== null){
+			// $userHome can be injected by batch scan process
+			$this->userFolder = $userHome;
+		}
+
 		// get execution time limit
 		$executionTime = intval(ini_get('max_execution_time'));
 		// set execution time limit to unlimited
@@ -335,11 +365,24 @@ class Scanner extends PublicEmitter {
 				// break scan - 20 files are already scanned
 				break;
 			}
-			if(!$batch && in_array($file->getId(), $fileIds)) {
+			if(in_array($file->getId(), $fileIds)) {
 				// skip this file as it's already scanned
 				continue;
 			}
-			$this->update($file);
+			if($debug) {
+				$before = memory_get_usage(true);
+			}
+			$this->update($file, $userId);
+			if($debug && $output) {
+				$after = memory_get_usage(true);
+				$diff = $after - $before;
+				$afterFileSize = new FileSize($after);
+				$diffFileSize = new FileSize($diff);
+				$humanFilesizeAfter = $afterFileSize->getHumanReadable();
+				$humanFilesizeDiff = $diffFileSize->getHumanReadable();
+				$path = $file->getPath();
+				$output->writeln("\e[1m $count \e[0m $humanFilesizeAfter \e[1m $diff \e[0m ($humanFilesizeDiff) $path");
+			}
 			$count++;
 		}
 		// find album covers
@@ -356,24 +399,6 @@ class Scanner extends PublicEmitter {
 		$this->logger->log(sprintf('Rescan finished (%d/%d)', $processedCount, $totalCount), 'info');
 
 		return array('processed' => $processedCount, 'scanned' => $count, 'total' => $totalCount);
-	}
-
-	/**
-	 * Removes orphaned data from the database
-	 */
-	public function cleanUp() {
-		$sqls = array(
-			'UPDATE `*PREFIX*music_albums` SET `cover_file_id` = NULL WHERE `cover_file_id` IS NOT NULL AND `cover_file_id` NOT IN (SELECT `fileid` FROM `*PREFIX*filecache`);',
-			'DELETE FROM `*PREFIX*music_tracks` WHERE `file_id` NOT IN (SELECT `fileid` FROM `*PREFIX*filecache`);',
-			'DELETE FROM `*PREFIX*music_albums` WHERE `id` NOT IN (SELECT `album_id` FROM `*PREFIX*music_tracks` GROUP BY `album_id`);',
-			'DELETE FROM `*PREFIX*music_album_artists` WHERE `album_id` NOT IN (SELECT `id` FROM `*PREFIX*music_albums` GROUP BY `id`);',
-			'DELETE FROM `*PREFIX*music_artists` WHERE `id` NOT IN (SELECT `artist_id` FROM `*PREFIX*music_album_artists` GROUP BY `artist_id`);'
-		);
-
-		foreach ($sqls as $sql) {
-			$query = $this->db->prepareQuery($sql);
-			$query->execute();
-		}
 	}
 
 	/**

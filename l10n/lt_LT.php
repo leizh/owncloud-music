@@ -1,17 +1,12 @@
 <?php
 $TRANSLATIONS = array(
-"Delete" => "Ištrinti",
 "Description" => "Aprašymas",
-"Loading ..." => "Įkeliama ...",
 "Music" => "Muzika",
 "Next" => "Kitas",
-"Nothing in here. Upload your music!" => "Nieko nėra. Įkelkite sava muziką!",
 "Pause" => "Pristabdyti",
 "Play" => "Groti",
 "Previous" => "Ankstesnis",
 "Repeat" => "Kartoti",
-"_Show all {{ trackcount }} songs ..._::_Show all {{ trackcount }} songs ..._" => array("Rodyti visas {{ trackcount }} dainas ...","Rodyti visas {{ trackcount }} dainas ...","Rodyti visas {{ trackcount }} dainas ..."),
-"Show less ..." => "Rodyti mažiau ...",
 "Shuffle" => "Maišyti",
 "Unknown album" => "Nežinomas albumas",
 "Unknown artist" => "Nežinomas atlikėjas"

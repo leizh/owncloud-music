@@ -19,8 +19,6 @@ use \OCA\Music\AppFramework\Db\Entity;
 use \OCA\Music\Core\API;
 
 /**
- * @method int getId()
- * @method setId(int $id)
  * @method string getName()
  * @method setName(string $name)
  * @method int getYear()
@@ -33,8 +31,8 @@ use \OCA\Music\Core\API;
  * @method setUserId(string $userId)
  * @method int getTrackCount()
  * @method setTrackCount(int $trackCount)
- * @method string getArtist()
- * @method setArtist(string $artist)
+ * @method Artist getArtist()
+ * @method setArtist(Artist $artist)
  */
 class Album extends Entity {
 
@@ -55,6 +53,7 @@ class Album extends Entity {
 	}
 
 	/**
+	 * Generates URL to album
 	 * @param \OCP\IURLGenerator $urlGenerator
 	 * @return string the url
 	 */
@@ -66,7 +65,8 @@ class Album extends Entity {
 	}
 
 	/**
-	 * @param \OCP\IURLGenerator $urlGenerator
+	 * Returns an array of all artists - each with ID and URL for that artist
+	 * @param \OCP\IURLGenerator $urlGenerator URLGenerator
 	 * @return array
 	 */
 	public function getArtists(IURLGenerator $urlGenerator) {
@@ -84,6 +84,8 @@ class Album extends Entity {
 	}
 
 	/**
+	 * Returns the name of the album - if empty it returns the translated
+	 * version of "Unknown album"
 	 * @param object $l10n
 	 * @return string
 	 */
@@ -95,6 +97,12 @@ class Album extends Entity {
 		return $name;
 	}
 
+	/**
+	 * Creates object used for collection API (array with name, year, cover URL and ID)
+	 * @param  IURLGenerator $urlGenerator URLGenerator
+	 * @param  object        $l10n         L10n handler
+	 * @return array                       collection API object
+	 */
 	public function toCollection(IURLGenerator $urlGenerator, $l10n) {
 		$coverUrl = null;
 		if($this->getCoverFileId()) {
@@ -109,7 +117,14 @@ class Album extends Entity {
 		);
 	}
 
+	/**
+	 * Creates object used by the shiva API (array with name, year, cover URL, ID, slug, URI and artists Array)
+	 * @param  IURLGenerator $urlGenerator URLGenerator
+	 * @param  object        $l10n         L10n handler
+	 * @return array                       shiva API object
+	 */
 	public function toAPI(IURLGenerator $urlGenerator, $l10n) {
+		// TODO refactor to use toCollection() and just append additional keys
 		$coverUrl = null;
 		if($this->getCoverFileId() > 0) {
 			$coverUrl = $urlGenerator->linkToRoute('music.api.cover',

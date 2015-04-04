@@ -46,6 +46,9 @@ class TrackMapperTest extends \OCA\Music\AppFramework\Utility\MapperTestUtility 
 		);
 	}
 
+	/**
+	 * @param string $condition
+	 */
 	private function makeSelectQueryWithoutUserId($condition){
 		return 'SELECT `track`.`title`, `track`.`number`, `track`.`id`, '.
 			'`track`.`artist_id`, `track`.`album_id`, `track`.`length`, '.
@@ -54,6 +57,9 @@ class TrackMapperTest extends \OCA\Music\AppFramework\Utility\MapperTestUtility 
 			'WHERE ' . $condition;
 	}
 
+	/**
+	 * @param string $condition
+	 */
 	private function makeSelectQuery($condition=null){
 		return $this->makeSelectQueryWithOutUserId('`track`.`user_id` = ? ' . $condition);
 	}
@@ -111,25 +117,25 @@ class TrackMapperTest extends \OCA\Music\AppFramework\Utility\MapperTestUtility 
 
 	public function testCountByArtist(){
 		$artistId = 1;
-		$sql = 'SELECT COUNT(*) FROM `*PREFIX*music_tracks` `track` '.
+		$sql = 'SELECT COUNT(*) AS count FROM `*PREFIX*music_tracks` `track` '.
 			'WHERE `track`.`user_id` = ? AND `track`.`artist_id` = ?';
-		$this->setMapperResult($sql, array($this->userId, $artistId), array(array('COUNT(*)' => 1)));
+		$this->setMapperResult($sql, array($this->userId, $artistId), array(array('count' => 1)));
 		$result = $this->mapper->countByArtist($artistId, $this->userId);
 		$this->assertEquals(1, $result);
 	}
 
 	public function testCountByAlbum(){
 		$albumId = 1;
-		$sql = 'SELECT COUNT(*) FROM `*PREFIX*music_tracks` `track` '.
+		$sql = 'SELECT COUNT(*) AS count FROM `*PREFIX*music_tracks` `track` '.
 			'WHERE `track`.`user_id` = ? AND `track`.`album_id` = ?';
-		$this->setMapperResult($sql, array($this->userId, $albumId), array(array('COUNT(*)' => 1)));
+		$this->setMapperResult($sql, array($this->userId, $albumId), array(array('count' => 1)));
 		$result = $this->mapper->countByAlbum($albumId, $this->userId);
 		$this->assertEquals(1, $result);
 	}
 
 	public function testCount(){
-		$sql = 'SELECT COUNT(*) FROM `*PREFIX*music_tracks` WHERE `user_id` = ?';
-		$this->setMapperResult($sql, array($this->userId), array(array('COUNT(*)' => 4)));
+		$sql = 'SELECT COUNT(*) AS count FROM `*PREFIX*music_tracks` WHERE `user_id` = ?';
+		$this->setMapperResult($sql, array($this->userId), array(array('count' => 4)));
 		$result = $this->mapper->count($this->userId);
 		$this->assertEquals(4, $result);
 	}
